@@ -1,0 +1,17 @@
+.DS_Store
+.env
+.vercel
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*~
+~$*
+*.log
+*.tmp
+*.swp
+*.swo
+
+.codex
+Base.xlsx
+Base.xlsx:Zone.Identifier
