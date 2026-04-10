@@ -29,7 +29,9 @@ def as_number(value) -> float:
 
 
 def week_of_month(value: dt.date) -> int:
-    return ((value.day - 1) // 7) + 1
+    first_day = value.replace(day=1)
+    start_offset = (first_day.weekday() + 1) % 7
+    return ((value.day + start_offset - 1) // 7) + 1
 
 
 def main() -> None:

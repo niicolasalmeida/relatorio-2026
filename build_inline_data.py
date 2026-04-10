@@ -73,7 +73,23 @@ def as_date(value: object) -> dt.date | None:
 
 
 def week_of_month(value: dt.date) -> int:
-    return ((value.day - 1) // 7) + 1
+    # Calendar weeks inside the month, using Sunday-Saturday boundaries.
+    first_day = value.replace(day=1)
+    start_offset = (first_day.weekday() + 1) % 7
+    return ((value.day + start_offset - 1) // 7) + 1
+
+
+def week_bounds_in_month(value: dt.date) -> tuple[dt.date, dt.date]:
+    month_start = value.replace(day=1)
+    month_end = value.replace(day=calendar.monthrange(value.year, value.month)[1])
+    days_since_sunday = (value.weekday() + 1) % 7
+    week_start = value - dt.timedelta(days=days_since_sunday)
+    week_end = week_start + dt.timedelta(days=6)
+    if week_start < month_start:
+        week_start = month_start
+    if week_end > month_end:
+        week_end = month_end
+    return week_start, week_end
 
 
 def month_meta(value: dt.date) -> dict[str, object]:
@@ -88,10 +104,7 @@ def month_meta(value: dt.date) -> dict[str, object]:
 
 def focus_params(value: dt.date) -> dict[str, str]:
     week_index = week_of_month(value)
-    start_day = ((week_index - 1) * 7) + 1
-    end_day = min(calendar.monthrange(value.year, value.month)[1], week_index * 7)
-    start_date = dt.date(value.year, value.month, start_day)
-    end_date = dt.date(value.year, value.month, end_day)
+    start_date, end_date = week_bounds_in_month(value)
     return {
         "AnoFoco": str(value.year),
         "MesFoco": str(value.month),
