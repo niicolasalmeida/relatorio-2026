@@ -61,4 +61,11 @@ Se quiser, voce tambem pode passar a mensagem do commit:
 ./publish_report.sh "Atualiza relatorio abril"
 ```
 
-O script faz `git add`, `git commit` e `git push origin main`. Como o projeto esta ligado ao GitHub no Vercel, o link publicado deve atualizar automaticamente depois do deploy.
+O script faz tudo em um comando:
+
+- `git add`
+- `git commit`
+- `git push origin main`
+- `npx vercel --prod --yes`
+
+Se nao houver mudancas locais para commit, ele pula a parte do Git e executa somente o deploy em producao no Vercel.
