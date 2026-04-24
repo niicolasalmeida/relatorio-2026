@@ -13,6 +13,33 @@ BASE_XLSX = ROOT / "Base.xlsx"
 OUT = ROOT / "data.inline.js"
 
 MONTHS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+MONTH_NAME_TO_NUMBER = {
+    "janeiro": 1,
+    "fevereiro": 2,
+    "marco": 3,
+    "março": 3,
+    "abril": 4,
+    "maio": 5,
+    "junho": 6,
+    "julho": 7,
+    "agosto": 8,
+    "setembro": 9,
+    "outubro": 10,
+    "novembro": 11,
+    "dezembro": 12,
+    "jan": 1,
+    "fev": 2,
+    "mar": 3,
+    "abr": 4,
+    "mai": 5,
+    "jun": 6,
+    "jul": 7,
+    "ago": 8,
+    "set": 9,
+    "out": 10,
+    "nov": 11,
+    "dez": 12,
+}
 REGION_BY_UF = {
     "AC": "Norte",
     "AL": "Nordeste",
@@ -100,6 +127,21 @@ def month_meta(value: dt.date) -> dict[str, object]:
         "AnoMes": f"{value.year:04d}-{value.month:02d}",
         "SemanaMes": week_of_month(value),
     }
+
+
+def month_number_from_label(value: object) -> int | None:
+    if value in (None, "", "-"):
+        return None
+    if isinstance(value, (dt.datetime, dt.date)):
+        return value.month
+    text = str(value).strip()
+    if not text:
+        return None
+    lowered = text.lower()
+    if lowered.isdigit():
+        month = int(lowered)
+        return month if 1 <= month <= 12 else None
+    return MONTH_NAME_TO_NUMBER.get(lowered)
 
 
 def focus_params(value: dt.date) -> dict[str, str]:
@@ -243,12 +285,13 @@ def build_financeiro(wb: openpyxl.Workbook) -> list[dict[str, object]]:
     return rows
 
 
-def build_estoque(wb: openpyxl.Workbook) -> list[dict[str, object]]:
+def build_estoque(wb: openpyxl.Workbook, default_year: int) -> list[dict[str, object]]:
     ws = wb["Estoque"]
     headers = list(next(ws.iter_rows(min_row=1, max_row=1, values_only=True)))
     idx = {str(h).strip(): i for i, h in enumerate(headers) if h is not None}
 
     required = [
+        "Mês",
         "Empresa",
         "Setor",
         "Grupo de produto",
@@ -265,10 +308,13 @@ def build_estoque(wb: openpyxl.Workbook) -> list[dict[str, object]]:
     if missing:
         raise SystemExit(f"Colunas ausentes na aba Estoque: {', '.join(missing)}")
 
-    rows_by_code: dict[str, dict[str, object]] = {}
+    rows_by_code: dict[tuple[int, int, str], dict[str, object]] = {}
     for row in ws.iter_rows(min_row=2, values_only=True):
         code = clean_text(row[idx["Código"]])
         if not code:
+            continue
+        month_number = month_number_from_label(row[idx["Mês"]])
+        if month_number is None:
             continue
 
         quantity = as_number(row[idx["Quantidade"]])
@@ -278,7 +324,11 @@ def build_estoque(wb: openpyxl.Workbook) -> list[dict[str, object]]:
         total_cost = as_number(row[idx["CUSTO"]])
         sector = clean_text(row[idx["Setor"]]).upper()
 
-        item = rows_by_code.setdefault(code, {
+        item = rows_by_code.setdefault((default_year, month_number, code), {
+            "Ano": default_year,
+            "MesNumero": month_number,
+            "MesNome": MONTHS[month_number - 1],
+            "AnoMes": f"{default_year:04d}-{month_number:02d}",
             "Empresa": clean_text(row[idx["Empresa"]], "Nao informado"),
             "Codigo": code,
             "Produto": clean_text(row[idx["Nome do produto"]], "Nao informado"),
@@ -305,7 +355,7 @@ def build_estoque(wb: openpyxl.Workbook) -> list[dict[str, object]]:
         elif "DEMONSTRA" in sector:
             item["EstoqueDemonstracao"] = round(float(item["EstoqueDemonstracao"]) + quantity, 2)
 
-    return [rows_by_code[code] for code in sorted(rows_by_code)]
+    return [rows_by_code[key] for key in sorted(rows_by_code)]
 
 
 def main() -> None:
@@ -315,14 +365,14 @@ def main() -> None:
     wb = openpyxl.load_workbook(BASE_XLSX, read_only=True, data_only=True)
     vendas = build_vendas(wb)
     financeiro = build_financeiro(wb)
-    estoque = build_estoque(wb)
-
     if vendas:
         focus_date = max(dt.date.fromisoformat(row["DataEmissao"]) for row in vendas)
     elif financeiro:
         focus_date = max(dt.date.fromisoformat(row["DataEvento"]) for row in financeiro)
     else:
         focus_date = dt.date.today()
+
+    estoque = build_estoque(wb, focus_date.year)
 
     payload = {
         "vendas": vendas,

@@ -51,6 +51,7 @@ def main() -> None:
         "Dt. emissão",
         "Dt. baixa",
         "Vl. líquido",
+        "Vl. baixado",
         "Vl. em aberto",
         "Classificação 0",
         "Classificação 1",
@@ -93,6 +94,7 @@ def main() -> None:
             "SemanaMesBaixa": week_of_month(baixa_date) if baixa_date else 0,
             "DataBaixa": baixa_date.isoformat() if baixa_date else "",
             "ValorLiquido": abs(as_number(row[idx["Vl. líquido"]])),
+            "ValorBaixado": abs(as_number(row[idx["Vl. baixado"]])),
             "ValorAberto": abs(as_number(row[idx["Vl. em aberto"]])),
         })
 
