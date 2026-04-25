@@ -1556,10 +1556,73 @@
       gap: 12px;
     }
 
+    #pageInventory .charts-trend {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.24fr);
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    #pageInventory .charts-trend .panel {
+      min-height: 398px;
+      grid-template-rows: auto minmax(0, 1fr);
+      align-content: stretch;
+    }
+
     #pageInventory .charts-analysis .panel {
       min-height: 420px;
       overflow: hidden;
-      align-content: start;
+      grid-template-rows: auto minmax(0, 1fr);
+      align-content: stretch;
+    }
+
+    #pageInventory .bar-board {
+      min-height: 256px;
+      height: 100%;
+      padding: 10px 16px 8px;
+      align-content: center;
+      justify-items: center;
+    }
+
+    #pageInventory .bar-board .trend-svg {
+      height: 216px;
+      margin: auto 0;
+    }
+
+    #pageInventory .bar-board .trend-node text {
+      font-size: 18px;
+      font-weight: 900;
+      fill: #214f39;
+      paint-order: stroke;
+      stroke: rgba(255, 255, 255, 0.98);
+      stroke-width: 5.2px;
+      stroke-linejoin: round;
+    }
+
+    #pageInventory .bar-board .trend-node.active text {
+      font-size: 19px;
+      font-weight: 900;
+      fill: #173d2c;
+      stroke-width: 5.8px;
+    }
+
+    #pageInventory #inventoryWeekBars .trend-node text {
+      font-size: 16px;
+      stroke-width: 4.8px;
+    }
+
+    #pageInventory #inventoryWeekBars .trend-node.active text {
+      font-size: 17px;
+      stroke-width: 5.2px;
+    }
+
+    #pageInventory .bar-board .trend-x text {
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    #pageInventory .bar-board .trend-footer {
+      font-size: 14px;
+      font-weight: 800;
     }
 
     .pie-family-host {
@@ -2376,6 +2439,17 @@
         </div>
       </article>
     </section>
+
+    <section class="section-title">
+      <h2>Vendas Emitidas</h2>
+    </section>
+
+    <section class="charts charts-pay">
+      <article class="panel panel-wide">
+        <h3>Detalhamento das Vendas</h3>
+        <div id="salesTable" class="pay-grid"></div>
+      </article>
+    </section>
     </div>
 
     <div id="pageDre" class="page-body">
@@ -2673,6 +2747,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       classif: null,
       inventoryFamily: null,
       inventoryItem: null,
+      inventoryStockType: null,
       cashCompany: null,
       cashRank: null,
       cashTableDirection: null,
@@ -4039,7 +4114,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
     function renderYearQuickChips() {
       const host = document.getElementById("yearQuickChips");
       if (!host) return;
-      setStandaloneControlVisibility("yearQuickChips", !isProjectionPage());
+      setStandaloneControlVisibility("yearQuickChips", state.page !== "inventory" && !isProjectionPage());
       if (isProjectionPage()) return;
       const sourceRows = timeRows();
       const quickYears = Array.from(new Set(sourceRows.map((r) => Number(r.Ano || 0)).filter((y) => y > 0))).sort((a, b) => a - b);
@@ -4108,12 +4183,13 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
     function resetInventoryFilters() {
       state.inventoryFamily = null;
       state.inventoryItem = null;
+      state.inventoryStockType = null;
     }
 
     function renderYearSelect() {
       const sel = document.getElementById("yearSel");
       if (!sel) return;
-      setStandaloneControlVisibility("yearSel", !isProjectionPage());
+      setStandaloneControlVisibility("yearSel", state.page !== "inventory" && !isProjectionPage());
       if (isProjectionPage()) return;
       const years = Array.from(new Set(timeRows().map((r) => r.Ano))).filter((v) => v > 0).sort((a, b) => b - a);
       sel.innerHTML = years.map((y) => `<option value="${y}">${y}</option>`).join("");
@@ -4307,7 +4383,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       });
 
       if (state.page === "inventory") {
-        orderControlRows(["regSel", "typeSel", "classSel", "sellerSel", "cashSel"]);
+        orderControlRows(["regSel", "typeSel", "cashSel", "classSel", "sellerSel"]);
         const baseRows = inventoryBaseRows();
         const familyRows = state.inventoryFamily
           ? baseRows.filter((row) => inventoryFamilyOf(row) === state.inventoryFamily)
@@ -4336,10 +4412,25 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
           render();
         }, "Todos os produtos");
 
-        disableSelect("classSel", "Filtro 3", "Nao se aplica ao estoque");
-        disableSelect("sellerSel", "Filtro 4", "Nao se aplica ao estoque");
-        disableSelect("cashSel", "Filtro 5", "Nao se aplica ao estoque");
-        ["classSel", "sellerSel", "cashSel"].forEach((id) => {
+        setFilterLabel("cashSel", "Estoque");
+        const cashSel = document.getElementById("cashSel");
+        if (cashSel) {
+          cashSel.innerHTML = [
+            `<option value="">Todos os tipos</option>`,
+            `<option value="principal">Estoque Principal</option>`,
+            `<option value="demonstracao">Estoque Demonstração</option>`,
+          ].join("");
+          cashSel.value = state.inventoryStockType || "";
+          cashSel.disabled = false;
+          cashSel.onchange = () => {
+            state.inventoryStockType = cashSel.value || null;
+            render();
+          };
+        }
+
+        disableSelect("classSel", "Filtro 4", "Nao se aplica ao estoque");
+        disableSelect("sellerSel", "Filtro 5", "Nao se aplica ao estoque");
+        ["classSel", "sellerSel"].forEach((id) => {
           const label = document.querySelector(`label[for="${id}"]`);
           const select = document.getElementById(id);
           const row = select ? select.closest(".control-row") : null;
@@ -4347,6 +4438,12 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
           if (select) select.style.display = "none";
           if (row) row.style.display = "none";
         });
+        const cashLabel = document.querySelector('label[for="cashSel"]');
+        const cashSelect = document.getElementById("cashSel");
+        const cashRow = cashSelect ? cashSelect.closest(".control-row") : null;
+        if (cashLabel) cashLabel.style.display = "";
+        if (cashSelect) cashSelect.style.display = "";
+        if (cashRow) cashRow.style.display = "";
         return;
       }
 
@@ -5674,6 +5771,11 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
             CustoTotal: Number(row.CustoUnitario || 0) * principalQty,
           };
         })
+        .filter((row) => {
+          if (state.inventoryStockType === "principal") return Number(row.EstoquePrincipal || 0) > 0;
+          if (state.inventoryStockType === "demonstracao") return Number(row.EstoqueDemonstracao || 0) > 0;
+          return true;
+        })
         .filter((row) => !/^KIT SPLAN MODELO\b/i.test(String(row.Produto || "").trim()))
         .filter((row) => !(Number(row.Quantidade || 0) <= 0 && Number(row.EstoqueDemonstracao || 0) > 0));
     }
@@ -5749,6 +5851,11 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       return inventorySnapshotForPeriod(state.year, state.month);
     }
 
+    function setInventoryStockTypeFilter(value) {
+      state.inventoryStockType = value || null;
+      render();
+    }
+
     function sanitizeInventoryFilters() {
       const baseRows = inventoryBaseRows();
       if (state.inventoryFamily && !baseRows.some((row) => inventoryFamilyOf(row) === state.inventoryFamily)) {
@@ -5783,12 +5890,13 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       const host = document.getElementById("inventoryFilterChips");
       if (!host) return;
 
-      if (!state.inventoryFamily && !state.inventoryItem) {
-        host.innerHTML = "<span class='cross-note'>Clique em uma familia ou em um item para filtrar os cards e os graficos.</span>";
+      if (!state.inventoryFamily && !state.inventoryItem && !state.inventoryStockType) {
+        host.innerHTML = "<span class='cross-note'>Clique em uma familia, item ou tipo de estoque para filtrar os cards e os graficos.</span>";
         return;
       }
 
       const chips = [
+        state.inventoryStockType ? `<button class="xchip" type="button" data-inventory-clear="stockType">Tipo: ${escapeHtml(state.inventoryStockType === "principal" ? "Estoque Principal" : "Estoque Demonstração")} ×</button>` : "",
         state.inventoryFamily ? `<button class="xchip" type="button" data-inventory-clear="family">Familia: ${escapeHtml(inventoryFamilyLabel(state.inventoryFamily))} ×</button>` : "",
         state.inventoryItem ? `<button class="xchip" type="button" data-inventory-clear="item">Item: ${escapeHtml(state.inventoryItem)} ×</button>` : "",
         `<button class="xchip clear" type="button" data-inventory-clear="all">Limpar filtros</button>`,
@@ -5798,6 +5906,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       host.querySelectorAll("[data-inventory-clear]").forEach((el) => {
         el.addEventListener("click", () => {
           const kind = String(el.getAttribute("data-inventory-clear") || "");
+          if (kind === "stockType") state.inventoryStockType = null;
           if (kind === "family") state.inventoryFamily = null;
           if (kind === "item") state.inventoryItem = null;
           if (kind === "all") resetInventoryFilters();
@@ -6012,7 +6121,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       const activeIndex = selectedIndex >= 0 ? selectedIndex : Math.max(0, values.length - 1);
 
       const title = document.getElementById("inventoryMonthTitle");
-      if (title) title.textContent = `Saldo Principal por Mês - ${state.year}`;
+      if (title) title.textContent = "Saldo Principal por Mês";
 
       host.innerHTML = buildTrendChartMarkup({
         labels: monthly.map((item) => item.label),
@@ -6026,6 +6135,12 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         pointLabelFormatter: (value) => intBR(value),
         footerValueFormatter: (value) => `${intBR(value)} un`,
         titleFormatter: (value) => `${intBR(value)} un`,
+        topPad: 38,
+        valueLabelY: -12,
+        leftPad: 44,
+        rightPad: 44,
+        edgeLabelInset: 14,
+        hideFooter: true,
       });
 
       host.querySelectorAll("[data-inventory-month-total-bar]").forEach((el) => {
@@ -6069,7 +6184,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       const activeIndex = selectedIndex >= 0 ? selectedIndex : Math.max(0, values.length - 1);
 
       const title = document.getElementById("inventoryWeekTitle");
-      if (title) title.textContent = `Custo em Estoque por Mês - ${state.year}`;
+      if (title) title.textContent = "Custo em Estoque por Mês";
 
       host.innerHTML = buildTrendChartMarkup({
         labels: monthly.map((item) => item.label),
@@ -6083,6 +6198,12 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         pointLabelFormatter: (value) => brlCompact(value).replace("R$ ", ""),
         footerValueFormatter: (value) => brlCompact(value),
         titleFormatter: (value) => brl(value),
+        topPad: 38,
+        valueLabelY: -12,
+        leftPad: 44,
+        rightPad: 44,
+        edgeLabelInset: 14,
+        hideFooter: true,
       });
 
       host.querySelectorAll("[data-inventory-month-cost-bar]").forEach((el) => {
@@ -6251,7 +6372,6 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
           <td>${escapeHtml(row.Produto)}</td>
           <td>${escapeHtml(inventoryFamilyLabel(row.Familia))}</td>
           <td>${intBR(row.EstoquePrincipal)}</td>
-          <td>${intBR(row.Quantidade)}</td>
           <td>${brl(row.CustoTotal)}</td>
         </tr>
       `).join("");
@@ -6265,7 +6385,6 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
                 <th>Produto</th>
                 <th>Familia</th>
                 <th>Principal</th>
-                <th>Total</th>
                 <th>Custo total</th>
               </tr>
             </thead>
@@ -6846,6 +6965,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       leftPad = 24,
       rightPad = 22,
       edgeLabelInset = 8,
+      hideFooter = false,
       footerLabel = "Evolucao de faturamento",
       pointLabelFormatter = (value) => brlCompact(value).replace("R$ ", ""),
       footerValueFormatter = brl,
@@ -6903,7 +7023,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       }).join("");
 
       const activeValue = values[Math.max(0, activeIndex)] || 0;
-      const footer = `
+      const footer = hideFooter ? "" : `
         <div class="trend-footer">
           <span>${footerLabel}</span>
           <span class="trend-tag">${escapeHtml(tagText)} • ${escapeHtml(footerValueFormatter(activeValue))}</span>
@@ -7085,6 +7205,75 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
                 <th>Valor</th>
                 <th>Vendas</th>
                 <th>Part.</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderSalesTable() {
+      const host = document.getElementById("salesTable");
+      if (!host) return;
+
+      const rows = rowsByContext({
+        month: state.yearScope ? null : state.month,
+        week: state.yearScope ? null : state.week,
+      });
+
+      if (!rows.length) {
+        host.innerHTML = "<div class='pay-empty'>Sem vendas no contexto selecionado.</div>";
+        return;
+      }
+
+      const grouped = new Map();
+      rows.forEach((row) => {
+        const key = saleCountKey(row);
+        if (!grouped.has(key)) {
+          grouped.set(key, {
+            empresa: saleTypeOf(row),
+            data: String(row.DataEmissao || "").trim(),
+            cliente: String(row.Cliente || "").trim() || "Nao informado",
+            estado: String(row.Estado || "").trim() || ufOf(row) || "-",
+            nf: String(row.NF || "").trim() || "-",
+            total: 0,
+          });
+        }
+        grouped.get(key).total += Number(row.Valor || 0);
+      });
+
+      const sales = Array.from(grouped.values()).sort((a, b) => (
+        String(b.data || "").localeCompare(String(a.data || ""))
+        || (Number(b.total || 0) - Number(a.total || 0))
+        || String(b.nf || "").localeCompare(String(a.nf || ""))
+      ));
+
+      const rowsHtml = sales.map((sale) => `
+        <tr>
+          <td>${escapeHtml(sale.empresa)}</td>
+          <td>${sale.data ? dateBR(sale.data) : "-"}</td>
+          <td>${escapeHtml(sale.cliente)}</td>
+          <td>${escapeHtml(sale.estado)}</td>
+          <td>${escapeHtml(sale.nf)}</td>
+          <td>${brl(sale.total)}</td>
+        </tr>
+      `).join("");
+
+      host.innerHTML = `
+        <div class="cash-table-toolbar">
+          <div class="cash-table-summary">${intBR(sales.length)} venda(s) • ${brl(sum(sales, (sale) => Number(sale.total || 0)))}</div>
+        </div>
+        <div class="pay-table-wrap inventory-table-wrap">
+          <table class="pay-table">
+            <thead>
+              <tr>
+                <th>Empresa emitida</th>
+                <th>Data da emissão</th>
+                <th>Cliente</th>
+                <th>Estado</th>
+                <th>Nº NF</th>
+                <th>Total vendido</th>
               </tr>
             </thead>
             <tbody>${rowsHtml}</tbody>
@@ -7471,6 +7660,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       renderItensVendidos();
       renderVendedores();
       renderStateMap();
+      renderSalesTable();
       renderFinanceKpis();
       renderFinanceSummary();
       renderCashMixChart();
