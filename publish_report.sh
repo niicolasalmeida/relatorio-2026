@@ -5,6 +5,7 @@ cd "$(dirname "$0")"
 
 FILES=(
   "Relatório - Em contrução 2026 v4.backup.html"
+  "data.inline.js"
   "vercel.json"
   "api/report.mjs"
   "despesas.inline.js"
