@@ -273,6 +273,13 @@
       border-top: 1px dashed rgba(166, 215, 188, .34);
     }
 
+    .cross-filters.is-empty {
+      display: none;
+      min-height: 0;
+      padding-top: 0;
+      border-top: 0;
+    }
+
     .cross-note {
       font-size: 11px;
       color: #b6ddc9;
@@ -652,62 +659,64 @@
     }
 
     .projection-month-grid {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 8px;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 4px 2px 10px;
+      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
+      scrollbar-color: #9fc3ae #edf4ef;
+    }
+
+    .projection-month-grid::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .projection-month-grid::-webkit-scrollbar-track {
+      background: #edf4ef;
+      border-radius: 999px;
+    }
+
+    .projection-month-grid::-webkit-scrollbar-thumb {
+      background: #9fc3ae;
+      border-radius: 999px;
     }
 
     .projection-month-btn {
-      border: 1px solid #d4e4da;
-      border-radius: 10px;
-      background: linear-gradient(180deg, #fbfefb 0%, #f3faf5 100%);
-      padding: 8px 9px;
-      display: grid;
-      gap: 5px;
-      text-align: left;
+      border: 1px solid #d5e6db;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #fbfefb 0%, #f1f8f3 100%);
+      padding: 10px 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 96px;
+      white-space: nowrap;
       cursor: pointer;
       box-shadow: var(--shadow-soft);
+      scroll-snap-align: start;
     }
 
     .projection-month-btn:hover {
       transform: translateY(-1px);
-      background: linear-gradient(180deg, #ffffff 0%, #f2faf5 100%);
+      background: linear-gradient(180deg, #ffffff 0%, #eef8f1 100%);
     }
 
     .projection-month-btn.active {
-      border-color: #9fcbb3;
-      background: linear-gradient(180deg, #ecf7f0 0%, #e1f1e7 100%);
+      border-color: #7ab692;
+      background: linear-gradient(180deg, #dff1e7 0%, #cee8d9 100%);
+      box-shadow: inset 0 0 0 1px rgba(74, 131, 97, 0.12), var(--shadow-soft);
     }
 
     .projection-month-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      align-items: baseline;
+      display: block;
     }
 
     .projection-month-name {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 900;
       color: #29533f;
-    }
-
-    .projection-month-main {
-      font-size: 15px;
-      font-weight: 900;
-      color: #1e4735;
-    }
-
-    .projection-month-main.down {
-      color: #9d3d35;
-    }
-
-    .projection-month-meta {
-      display: grid;
-      gap: 2px;
-      font-size: 10px;
-      color: #5b7163;
-      font-weight: 700;
+      letter-spacing: .2px;
     }
 
     .projection-breakdown {
@@ -756,27 +765,84 @@
       white-space: nowrap;
     }
 
+    .projection-scenario-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      border: 1px solid #d8e7de;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fbfefc 0%, #f2f8f4 100%);
+    }
+
+    .projection-scenario-copy {
+      display: grid;
+      gap: 2px;
+    }
+
+    .projection-scenario-kicker {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .72px;
+      color: #6c8375;
+      font-weight: 900;
+    }
+
+    .projection-scenario-note {
+      font-size: 11px;
+      color: #5d7366;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .projection-scenario-actions {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
     .projection-combo-svg {
       width: 100%;
-      height: 280px;
+      height: 340px;
       display: block;
       overflow: visible;
     }
 
     .projection-combo-grid line {
-      stroke: #dce8e0;
+      stroke: #deebe3;
       stroke-width: 1;
     }
 
     .projection-combo-axis line {
-      stroke: #a9c1b3;
+      stroke: #b8ccc0;
       stroke-width: 1.2;
+    }
+
+    .projection-combo-axis-label {
+      fill: #698173;
+      font-size: 10px;
+      font-weight: 800;
+      dominant-baseline: middle;
+      letter-spacing: .1px;
+    }
+
+    .projection-combo-axis-label.left {
+      text-anchor: end;
+    }
+
+    .projection-combo-axis-label.right {
+      text-anchor: start;
     }
 
     .projection-combo-bar {
       cursor: pointer;
       transition: opacity .14s ease, transform .14s ease;
       transform-origin: 50% 50%;
+      stroke-width: 1.2;
     }
 
     .projection-combo-bar:hover {
@@ -785,19 +851,23 @@
     }
 
     .projection-combo-bar.entry {
-      fill: #20906a;
+      fill: #9dddb7;
+      stroke: #6fbe92;
     }
 
     .projection-combo-bar.exit {
-      fill: #d46d43;
+      fill: #f2b0aa;
+      stroke: #df8d87;
     }
 
     .projection-combo-bar.active.entry {
-      fill: #176c4d;
+      fill: #71c696;
+      stroke: #4da877;
     }
 
     .projection-combo-bar.active.exit {
-      fill: #b75734;
+      fill: #e88e87;
+      stroke: #d36b63;
     }
 
     .projection-combo-bar-label {
@@ -812,16 +882,16 @@
     }
 
     .projection-combo-bar-label.entry {
-      fill: #1b6d4d;
+      fill: #2b7a50;
     }
 
     .projection-combo-bar-label.exit {
-      fill: #aa4f30;
+      fill: #b95d56;
     }
 
     .projection-combo-line {
       fill: none;
-      stroke: #214936;
+      stroke: #355548;
       stroke-width: 3;
       stroke-linecap: round;
       stroke-linejoin: round;
@@ -833,13 +903,13 @@
 
     .projection-combo-node circle {
       fill: #ffffff;
-      stroke: #214936;
+      stroke: #355548;
       stroke-width: 2.5;
     }
 
     .projection-combo-node.active circle {
-      fill: #edf7f1;
-      stroke: #1b5c40;
+      fill: #eef6f1;
+      stroke: #24483b;
     }
 
     .projection-combo-month {
@@ -855,7 +925,7 @@
     }
 
     .projection-combo-value {
-      fill: #214936;
+      fill: #355548;
       font-size: 9px;
       font-weight: 800;
       text-anchor: middle;
@@ -926,6 +996,27 @@
 
     #pageCash #cashMixChart .expense-cash-stack-svg {
       height: 300px;
+    }
+
+    #pageCash #cashMixChart .projection-combo-svg {
+      height: 324px;
+    }
+
+    #pageCash #cashMixChart .projection-combo-axis-label {
+      font-size: 11.4px;
+    }
+
+    #pageCash #cashMixChart .projection-combo-bar-label {
+      font-size: 10.8px;
+      stroke-width: 4px;
+    }
+
+    #pageCash #cashMixChart .projection-combo-value {
+      font-size: 10.8px;
+    }
+
+    #pageCash #cashMixChart .projection-combo-month {
+      font-size: 11.4px;
     }
 
     #pageCash #cashMixChart .expense-cash-stack-label {
@@ -1003,6 +1094,11 @@
       stroke-width: 3;
       stroke-linecap: round;
       stroke-linejoin: round;
+    }
+
+    .trend-line.dashed {
+      stroke-dasharray: 7 7;
+      opacity: .78;
     }
 
     .trend-node {
@@ -2263,7 +2359,6 @@
       .map-layout,
       .analysis-strip,
       .projection-focus { grid-template-columns: 1fr; }
-      .projection-month-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .kpi-month { grid-template-columns: 1fr; }
       .kpi-week { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .finance-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -2291,11 +2386,12 @@
       .projection-kpis,
       .kpi-week,
       .kpi-extra,
-      .projection-balance-metrics,
-      .projection-month-grid { grid-template-columns: 1fr; }
+      .projection-balance-metrics { grid-template-columns: 1fr; }
       .hbar-row { grid-template-columns: 22px minmax(66px, 110px) minmax(72px, 1fr) minmax(62px, auto); }
       .bar-board { min-height: 206px; }
       .pie-family-chart { padding-top: 0; }
+      .projection-scenario-bar { align-items: start; }
+      .projection-scenario-actions { width: 100%; }
     }
   </style>
 </head>
@@ -2458,11 +2554,11 @@
       </section>
 
       <section class="finance-kpis">
-        <article class="card"><small>RECEITA BRUTA</small><strong id="dreReceitaBruta">-</strong></article>
-        <article class="card accent-2"><small>LUCRO BRUTO</small><strong id="dreLucroBruto">-</strong></article>
-        <article class="card accent-2"><small>RESULTADO ANTES DOS IMPOSTOS</small><strong id="dreResultadoAntesImpostos">-</strong></article>
-        <article class="card accent-3"><small>IMPOSTOS DIRETOS</small><strong id="dreImpostosLucro">-</strong></article>
-        <article class="card"><small>MARGEM BRUTA</small><strong id="dreMargemBruta">-</strong></article>
+        <article class="card"><small>RECEITA BRUTA</small><strong id="dreReceitaBruta">-</strong><span id="dreReceitaBrutaMeta" class="card-meta">-</span></article>
+        <article class="card accent-2"><small>LUCRO BRUTO</small><strong id="dreLucroBruto">-</strong><span id="dreLucroBrutoMeta" class="card-meta">-</span></article>
+        <article class="card accent-2"><small>EBITDA</small><strong id="dreEbitda">-</strong><span id="dreEbitdaMeta" class="card-meta">-</span></article>
+        <article class="card accent-3"><small>MARGEM BRUTA</small><strong id="dreMargemBruta">-</strong><span id="dreMargemBrutaMeta" class="card-meta">-</span></article>
+        <article class="card"><small>MARGEM LIQUIDA</small><strong id="dreMargemLiquida">-</strong><span id="dreMargemLiquidaMeta" class="card-meta">-</span></article>
       </section>
 
       <section class="charts charts-trend expense-detail-grid">
@@ -2481,6 +2577,7 @@
           <div id="dreDetailTable" class="expense-detail-table-wrap"></div>
         </article>
       </section>
+
     </div>
 
     <div id="pageCash" class="page-body">
@@ -2489,11 +2586,11 @@
       </section>
 
       <section class="finance-kpis">
-        <article class="card"><small>ENTRADAS</small><strong id="cashEntrada">-</strong></article>
-        <article class="card accent-2"><small>SAIDAS</small><strong id="cashSaida">-</strong></article>
-        <article class="card accent-2"><small>FLUXO LIQUIDO</small><strong id="cashLiquido">-</strong></article>
-        <article class="card accent-3"><small>CAIXA OPERACIONAL LIQUIDO</small><strong id="cashOperacional">-</strong></article>
-        <article class="card"><small>MOVIMENTOS NO PERIODO</small><strong id="cashMovimentos">-</strong></article>
+        <article class="card"><small>ENTRADAS</small><strong id="cashEntrada">-</strong><span id="cashEntradaMeta" class="card-meta">-</span></article>
+        <article class="card accent-2"><small>SAIDAS</small><strong id="cashSaida">-</strong><span id="cashSaidaMeta" class="card-meta">-</span></article>
+        <article class="card accent-2"><small>FLUXO LIQUIDO</small><strong id="cashLiquido">-</strong><span id="cashLiquidoMeta" class="card-meta">-</span></article>
+        <article class="card accent-3"><small>CAIXA OPERACIONAL LIQUIDO</small><strong id="cashOperacional">-</strong><span id="cashOperacionalMeta" class="card-meta">-</span></article>
+        <article class="card"><small>MOVIMENTOS NO PERIODO</small><strong id="cashMovimentos">-</strong><span id="cashMovimentosMeta" class="card-meta">-</span></article>
       </section>
 
       <section class="charts charts-trend expense-cash-grid">
@@ -2541,8 +2638,8 @@
       </section>
 
       <section class="projection-kpis">
-        <article class="card"><small>ENTRADAS 12 MESES</small><strong id="projYearEntry">-</strong></article>
-        <article class="card accent-2"><small>SAIDAS 12 MESES</small><strong id="projYearExit">-</strong></article>
+        <article class="card"><small>ENTRADAS 12 MESES</small><strong id="projYearEntry">-</strong><span class="card-meta" id="projYearEntryAvg">Média/Mês: -</span></article>
+        <article class="card accent-2"><small>SAIDAS 12 MESES</small><strong id="projYearExit">-</strong><span class="card-meta" id="projYearExitAvg">Média/Mês: -</span></article>
         <article class="card accent-2"><small>SALDO FINAL PROJETADO</small><strong id="projYearNet">-</strong></article>
         <article class="card accent-3"><small>MES EM FOCO</small><strong id="projFocusMonth">-</strong></article>
       </section>
@@ -2554,12 +2651,13 @@
       <section class="charts charts-pay">
         <article class="panel panel-wide">
           <h3>Entradas, Saídas e Saldo Acumulado</h3>
+          <div id="projScenarioFilter"></div>
           <div id="projComboChart"></div>
         </article>
       </section>
 
       <section class="section-title">
-        <h2>Calendário Mensal</h2>
+        <h2>Detalhe por mês - Selecione</h2>
       </section>
 
       <section class="charts charts-pay">
@@ -2649,11 +2747,13 @@
 
       <section class="finance-kpis">
         <article class="card"><small>DESPESA TOTAL</small><strong id="expTotal">-</strong></article>
-        <article class="card accent-2"><small>LANCAMENTOS</small><strong id="expCount">-</strong></article>
+        <article class="card accent-2"><small>VARIAÇÃO VS MÊS ANTERIOR</small><strong id="expVarPrev">-</strong><span id="expVarPrevMeta" class="card-meta">-</span></article>
         <article class="card accent-3"><small>MAIOR CENTRO DE GASTO</small><strong id="expTopNature">-</strong><span id="expTopNatureValue" class="card-meta">-</span></article>
         <article class="card accent-2"><small>TICKET MEDIO</small><strong id="expAvgTicket">-</strong><span id="expAvgTicketMeta" class="card-meta">por lancamento</span></article>
         <article class="card accent-3"><small>MAIOR LANCAMENTO</small><strong id="expTopLaunch">-</strong><span id="expTopLaunchMeta" class="card-meta">-</span></article>
       </section>
+
+      <div id="expenseScenarioFilter"></div>
 
       <section class="section-title">
         <h2>Evolução Mensal</h2>
@@ -2722,7 +2822,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
 
 (function () {
   const data = window.__DASHBOARD_DATA__ || {};
-  data.projecao = {"recebimentos": [{"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 9558.6}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 18281.85}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 4281.86}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 1756.53}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 21000.0}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 7000.0}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 14000.0}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 7000.0}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 7000.0}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 84147.45}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 84256.45}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 84256.45}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 84256.45}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "Valor": 84256.44}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 79750.69}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 79750.69}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "Valor": 79750.69}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 72492.84}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 67670.84}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "Valor": 67670.84}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 65029.82}, {"Empresa": "Miha", "Linha": "RECEITAS DE SERVIÇOS", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 2587.49}, {"Empresa": "Miha", "Linha": "RECEITAS DE SERVIÇOS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 2587.48}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 21964.14}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 18608.03}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 10849.46}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 9418.44}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "Valor": 8720.52}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 5980.31}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 5980.31}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "Valor": 4747.66}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 1490.0}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 1490.0}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "Valor": 1490.0}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 1490.0}, {"Empresa": "Splan", "Linha": "RECEITA DE VENDAS DISTRIBUIDOR", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 2110.0}, {"Empresa": "Splan", "Linha": "RECEITA DE VENDAS DISTRIBUIDOR", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 48050.0}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 132715.54}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 68828.93}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 40606.27}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 30141.98}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "Valor": 29308.65}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 29308.65}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 29308.65}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "Valor": 26167.54}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 22259.21}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 22259.17}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "Valor": 19390.46}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 15482.09}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 79808.49}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 206081.15}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 216545.44}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "Valor": 267378.77}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 267378.77}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 317378.77}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "Valor": 320519.88}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 374428.21}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 374428.25}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "Valor": 427296.96}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 431205.33}], "pagamentos": [{"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 20500.0, "ValorRealizado": 24227.94}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 25000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 38153.23, "ValorRealizado": 38153.23}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 17200.0, "ValorRealizado": 8729.58}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 23000.0, "ValorRealizado": 22982.21}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 25000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 25000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 25000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 27000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 27000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 27000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 55000.0, "ValorRealizado": 74699.67}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 60000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 60000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 60000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 62000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 62000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 62000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 62000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 65000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 65000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 65000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 65000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 65000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 65000.0, "ValorRealizado": 86287.37}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 75000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 75000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 75000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 75000.0, "ValorRealizado": 81209.99}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 60000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 85000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 85000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 20000.0, "ValorRealizado": 61022.28}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 350.0, "ValorRealizado": 854.31}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 555000.0, "ValorRealizado": 40503.65}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 1500.0, "ValorRealizado": 589.9}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 30000.0, "ValorRealizado": 26515.32}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}]};
+  data.projecao = {"recebimentos": [{"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "Valor": 7033.29}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 9558.6}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 18281.85}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 4281.86}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 1756.53}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 21000.0}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 7000.0}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 14000.0}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 7000.0}, {"Empresa": "Miha", "Linha": "RECEITA DE OPÇÃO DE COMPRA", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 7000.0}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "Valor": 63186.73}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 84147.45}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 84256.45}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 84256.45}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 84256.45}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "Valor": 84256.44}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 79750.69}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 79750.69}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "Valor": 79750.69}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 72492.84}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 67670.84}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "Valor": 67670.84}, {"Empresa": "Miha", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 65029.82}, {"Empresa": "Miha", "Linha": "RECEITAS DE SERVIÇOS", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "Valor": 5585.61}, {"Empresa": "Miha", "Linha": "RECEITAS DE SERVIÇOS", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 2587.49}, {"Empresa": "Miha", "Linha": "RECEITAS DE SERVIÇOS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 2587.48}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "Valor": 25699.12}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 21964.14}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 18608.03}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 10849.46}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 9418.44}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "Valor": 8720.52}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 5980.31}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 5980.31}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "Valor": 4747.66}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 1490.0}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 1490.0}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "Valor": 1490.0}, {"Empresa": "Miha", "Linha": "RECEITAS DE VENDAS ACESSÓRIOS", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 1490.0}, {"Empresa": "Splan", "Linha": "RECEITA DE VENDAS DISTRIBUIDOR", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "Valor": 159830.42}, {"Empresa": "Splan", "Linha": "RECEITA DE VENDAS DISTRIBUIDOR", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 2110.0}, {"Empresa": "Splan", "Linha": "RECEITA DE VENDAS DISTRIBUIDOR", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 48050.0}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "Valor": 109539.42}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 132715.54}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 68828.93}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 40606.27}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 30141.98}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "Valor": 29308.65}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 29308.65}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 29308.65}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "Valor": 26167.54}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 22259.21}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 22259.17}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "Valor": 19390.46}, {"Empresa": "Splan", "Linha": "RECEITA VENDAS EQUIPAMENTOS", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 15482.09}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS DE ARRENDAMENTOS", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 3312.58}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "Valor": 79808.49}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "Valor": 206081.15}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "Valor": 216545.44}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "Valor": 267378.77}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "Valor": 267378.77}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "Valor": 317378.77}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "Valor": 320519.88}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "Valor": 374428.21}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "Valor": 374428.25}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "Valor": 427296.96}, {"Empresa": "Splan", "Linha": "RECEITAS VENDAS FUTURAS", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "Valor": 431205.33}], "pagamentos": [{"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 20500.0, "ValorRealizado": 24227.94}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 25000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Administrativo", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 20000.0, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 38153.23, "ValorRealizado": 38153.23}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Dívidas", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 38153.23, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 17200.0, "ValorRealizado": 8729.58}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Facilities", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 9000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 23000.0, "ValorRealizado": 22982.21}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 25000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 25000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 25000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 27000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 27000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 27000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Diretos", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 55000.0, "ValorRealizado": 74699.67}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 60000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 60000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 60000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 62000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 62000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 62000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 62000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 65000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 65000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 65000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 65000.0, "ValorRealizado": 0.0}, {"Categoria": "Impostos Indiretos", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 65000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 65000.0, "ValorRealizado": 86287.37}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 75000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 75000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 75000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Marketing", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 80000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 75000.0, "ValorRealizado": 81209.99}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 60000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 85000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 85000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Pessoal", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 70000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 20000.0, "ValorRealizado": 61022.28}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Serviços Contratados", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 350.0, "ValorRealizado": 854.31}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Tarifas/Mora/IOF", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 750.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Custos Operacionais Miha (Assistência Técnica)", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 300.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 555000.0, "ValorRealizado": 40503.65}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Compra Mercadoria Importada Splan", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 550000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 1500.0, "ValorRealizado": 589.9}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Miha", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 1500.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2026-03", "DataMes": "2026-03-01", "ValorOrcado": 30000.0, "ValorRealizado": 26515.32}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 4, "MesNome": "Abr", "AnoMes": "2026-04", "DataMes": "2026-04-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 5, "MesNome": "Mai", "AnoMes": "2026-05", "DataMes": "2026-05-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 6, "MesNome": "Jun", "AnoMes": "2026-06", "DataMes": "2026-06-01", "ValorOrcado": 30000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 7, "MesNome": "Jul", "AnoMes": "2026-07", "DataMes": "2026-07-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 8, "MesNome": "Ago", "AnoMes": "2026-08", "DataMes": "2026-08-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 9, "MesNome": "Set", "AnoMes": "2026-09", "DataMes": "2026-09-01", "ValorOrcado": 35000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 10, "MesNome": "Out", "AnoMes": "2026-10", "DataMes": "2026-10-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 11, "MesNome": "Nov", "AnoMes": "2026-11", "DataMes": "2026-11-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2026, "MesNumero": 12, "MesNome": "Dez", "AnoMes": "2026-12", "DataMes": "2026-12-01", "ValorOrcado": 40000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2027, "MesNumero": 1, "MesNome": "Jan", "AnoMes": "2027-01", "DataMes": "2027-01-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2027, "MesNumero": 2, "MesNome": "Fev", "AnoMes": "2027-02", "DataMes": "2027-02-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}, {"Categoria": "Logística Splan", "Ano": 2027, "MesNumero": 3, "MesNome": "Mar", "AnoMes": "2027-03", "DataMes": "2027-03-01", "ValorOrcado": 50000.0, "ValorRealizado": 0.0}]};
   window.__DASHBOARD_DATA__ = data;
 })();
 </script>
@@ -2751,6 +2851,8 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       cashCompany: null,
       cashRank: null,
       cashTableDirection: null,
+      projExcludeImportedPurchase: false,
+      expenseExcludeImportedPurchase: false,
       expenseCompany: null,
       expenseCashClass: null,
       expenseClass1: null,
@@ -2764,6 +2866,8 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
     const data = { vendas: [], financeiro: [], parametros: [], estoque: [], despesas: [], recebimentos: [], projecao: { recebimentos: [], pagamentos: [] } };
     const geo = { br: null, loading: false };
     const CASH_COMPANIES = ["Wevitta", "Trinity", "Dignitus"];
+    const PROJECTION_IMPORTED_PURCHASE_CATEGORY = "Compra Mercadoria Importada Splan";
+    const EXPENSE_IMPORTED_PURCHASE_NATURE = "Compra de Mercadoria Importada";
     const UF_BY_STATE = {
       "acre": "AC",
       "alagoas": "AL",
@@ -3238,6 +3342,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       return (data.projecao.pagamentos || []).filter((row) => {
         if (Number(row.Ano || 0) !== year) return false;
         if (month != null && Number(row.MesNumero || 0) !== month) return false;
+        if (state.projExcludeImportedPurchase && String(row.Categoria || "").trim() === PROJECTION_IMPORTED_PURCHASE_CATEGORY) return false;
         return true;
       });
     }
@@ -3341,6 +3446,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         if (r.Ano !== year) return false;
         if (month != null && r.MesNumero !== month) return false;
         if (week != null && r.SemanaMes !== week) return false;
+        if (state.expenseExcludeImportedPurchase && expenseNatureOf(r) === EXPENSE_IMPORTED_PURCHASE_NATURE) return false;
         if (!ignoreCompany && state.expenseCompany && expenseCompanyOf(r) !== state.expenseCompany) return false;
         if (!ignoreCashClass && state.expenseCashClass && expenseCashClassOf(r) !== state.expenseCashClass) return false;
         if (!ignoreClass1 && state.expenseClass1 && expenseClass1Of(r) !== state.expenseClass1) return false;
@@ -3649,6 +3755,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         custos,
         lucroBruto,
         despesasIndiretas,
+        ebitda,
         receitaNaoOperacional,
         despesaNaoOperacional,
         resultadoFinanceiro,
@@ -4541,13 +4648,17 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
 
     function renderCrossFilters() {
       const host = document.getElementById("crossFilters");
+      const setMarkup = (markup) => {
+        host.innerHTML = markup;
+        host.classList.toggle("is-empty", !String(markup || "").trim());
+      };
 
       if (state.page === "dre") {
         if (!state.dreCompany) {
-          host.innerHTML = "<span class='cross-note'>A DRE usa filtros de periodo e empresa. Deixe vazio para ver o consolidado.</span>";
+          setMarkup("<span class='cross-note'>A DRE usa filtros de periodo e empresa. Deixe vazio para ver o consolidado.</span>");
           return;
         }
-        host.innerHTML = `<button class="xchip" data-clear="dreCompany">Empresa: ${escapeHtml(state.dreCompany)} ✕</button><button class="xchip clear" data-clear="dreAll">Limpar filtros</button>`;
+        setMarkup(`<button class="xchip" data-clear="dreCompany">Empresa: ${escapeHtml(state.dreCompany)} ✕</button><button class="xchip clear" data-clear="dreAll">Limpar filtros</button>`);
         host.querySelectorAll("button[data-clear]").forEach((bt) => {
           bt.onclick = () => {
             const t = bt.dataset.clear;
@@ -4560,14 +4671,14 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
 
       if (isCashContextPage()) {
         if (!state.cashCompany && !state.cashRank) {
-          host.innerHTML = `<span class='cross-note'>${state.page === "cashProjection" ? "Projeção Caixa" : "Fluxo de Caixa"} usa filtros de periodo e empresa: Wevitta, Trinity e Dignitus.</span>`;
+          setMarkup(`<span class='cross-note'>${state.page === "cashProjection" ? "Projeção Caixa" : "Fluxo de Caixa"} usa filtros de periodo e empresa: Wevitta, Trinity e Dignitus.</span>`);
           return;
         }
         const chips = [];
         if (state.cashCompany) chips.push(`<button class="xchip" data-clear="cashCompany">Empresa: ${escapeHtml(state.cashCompany)} ✕</button>`);
         if (state.cashRank) chips.push(`<button class="xchip" data-clear="cashRank">Item: ${escapeHtml(state.cashRank)} ✕</button>`);
         chips.push(`<button class="xchip clear" data-clear="cashAll">Limpar filtros</button>`);
-        host.innerHTML = chips.join("");
+        setMarkup(chips.join(""));
         host.querySelectorAll("button[data-clear]").forEach((bt) => {
           bt.onclick = () => {
             const t = bt.dataset.clear;
@@ -4580,7 +4691,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       }
 
       if (isProjectionPage()) {
-        host.innerHTML = "<span class='cross-note'>Projeção Caixa consolida Miha e Splan nas entradas e usa os pagamentos orçados da aba Projeção.</span>";
+        setMarkup("");
         return;
       }
 
@@ -4589,10 +4700,10 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         if (state.inventoryFamily) pills.push(`<button class="xchip" data-clear="inventoryFamily">Familia: ${escapeHtml(inventoryFamilyLabel(state.inventoryFamily))} ✕</button>`);
         if (state.inventoryItem) pills.push(`<button class="xchip" data-clear="inventoryItem">Produto: ${escapeHtml(state.inventoryItem)} ✕</button>`);
         if (!pills.length) {
-          host.innerHTML = "";
+          setMarkup("");
           return;
         }
-        host.innerHTML = `${pills.join("")}<button class="xchip clear" data-clear="inventoryAll">Limpar filtros</button>`;
+        setMarkup(`${pills.join("")}<button class="xchip clear" data-clear="inventoryAll">Limpar filtros</button>`);
         host.querySelectorAll("button[data-clear]").forEach((bt) => {
           bt.onclick = () => {
             const t = bt.dataset.clear;
@@ -4612,10 +4723,10 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         if (state.expenseClass1) pills.push(`<button class="xchip" data-clear="expenseClass1">Categoria: ${escapeHtml(state.expenseClass1)} ✕</button>`);
         if (state.expenseNature) pills.push(`<button class="xchip" data-clear="expenseNature">Natureza: ${escapeHtml(state.expenseNature)} ✕</button>`);
         if (!pills.length) {
-          host.innerHTML = "";
+          setMarkup("");
           return;
         }
-        host.innerHTML = `${pills.join("")}<button class="xchip clear" data-clear="expenseAll">Limpar filtros</button>`;
+        setMarkup(`${pills.join("")}<button class="xchip clear" data-clear="expenseAll">Limpar filtros</button>`);
         host.querySelectorAll("button[data-clear]").forEach((bt) => {
           bt.onclick = () => {
             const t = bt.dataset.clear;
@@ -4640,11 +4751,11 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       if (state.classif) pills.push(`<button class="xchip" data-clear="classif">Categoria: ${escapeHtml(state.classif)} ✕</button>`);
 
       if (!pills.length) {
-        host.innerHTML = "";
+        setMarkup("");
         return;
       }
 
-      host.innerHTML = `${pills.join("")}<button class="xchip clear" data-clear="all">Limpar filtros</button>`;
+      setMarkup(`${pills.join("")}<button class="xchip clear" data-clear="all">Limpar filtros</button>`);
       host.querySelectorAll("button[data-clear]").forEach((bt) => {
         bt.onclick = () => {
           const t = bt.dataset.clear;
@@ -4671,6 +4782,19 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       const pct = ((c - b) / b) * 100;
       const sign = pct > 0 ? "+" : "";
       return `${sign}${pct.toFixed(1).replace(".", ",")}%`;
+    }
+
+    function moneyDeltaText(current, base) {
+      const delta = Number(current || 0) - Number(base || 0);
+      if (delta === 0) return "R$ 0";
+      const sign = delta > 0 ? "+" : "-";
+      return `${sign}${brlCompact(Math.abs(delta)).replace(/^R\$\s?/, "R$ ")}`;
+    }
+
+    function pointsDeltaText(current, base) {
+      const delta = Number(current || 0) - Number(base || 0);
+      const sign = delta > 0 ? "+" : "";
+      return `${sign}${delta.toFixed(1).replace(".", ",")} p.p.`;
     }
 
     function calcRevenueDeltaTexts(currentValue) {
@@ -4761,6 +4885,65 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       );
       const operationalNet = operationalEntries - operationalExits;
       const totalMovements = entries + exits;
+      const currentYear = Number(state.year || 0);
+      const currentMonth = Number(state.month || 0);
+      const prevMonth = currentMonth <= 1 ? 12 : currentMonth - 1;
+      const prevYear = currentMonth <= 1 ? currentYear - 1 : currentYear;
+      const currentMonthRows = currentYear > 0 && currentMonth > 0
+        ? cashRowsByContext({ year: currentYear, month: currentMonth, week: null })
+        : [];
+      const prevMonthRows = currentYear > 0 && currentMonth > 0
+        ? cashRowsByContext({ year: prevYear, month: prevMonth, week: null })
+        : [];
+      const monthEntries = sum(currentMonthRows.filter((r) => r.Direcao === "Entrada"), (r) => Number(r.Valor || 0));
+      const prevMonthEntries = sum(prevMonthRows.filter((r) => r.Direcao === "Entrada"), (r) => Number(r.Valor || 0));
+      const monthExits = sum(currentMonthRows.filter((r) => r.Direcao === "Saida"), (r) => Number(r.Valor || 0));
+      const prevMonthExits = sum(prevMonthRows.filter((r) => r.Direcao === "Saida"), (r) => Number(r.Valor || 0));
+      const monthNet = monthEntries - monthExits;
+      const prevMonthNet = prevMonthEntries - prevMonthExits;
+      const monthOperationalEntries = sum(
+        currentMonthRows.filter((r) => r.Direcao === "Entrada" && r.ClassificacaoCaixa === "Operacional"),
+        (r) => Number(r.Valor || 0)
+      );
+      const monthOperationalExits = sum(
+        currentMonthRows.filter((r) => r.Direcao === "Saida" && r.ClassificacaoCaixa === "Operacional"),
+        (r) => Number(r.Valor || 0)
+      );
+      const prevMonthOperationalEntries = sum(
+        prevMonthRows.filter((r) => r.Direcao === "Entrada" && r.ClassificacaoCaixa === "Operacional"),
+        (r) => Number(r.Valor || 0)
+      );
+      const prevMonthOperationalExits = sum(
+        prevMonthRows.filter((r) => r.Direcao === "Saida" && r.ClassificacaoCaixa === "Operacional"),
+        (r) => Number(r.Valor || 0)
+      );
+      const monthOperationalNet = monthOperationalEntries - monthOperationalExits;
+      const prevMonthOperationalNet = prevMonthOperationalEntries - prevMonthOperationalExits;
+      const monthMovements = monthEntries + monthExits;
+      const prevMonthMovements = prevMonthEntries + prevMonthExits;
+      const prevMonthLabel = currentYear > 0 && currentMonth > 0 ? `${MONTHS[prevMonth - 1]} ${String(prevYear).slice(-2)}` : "";
+      const metaText = (current, base) => currentYear > 0 && currentMonth > 0 ? `${pctDeltaText(current, base, "Novo")} vs ${prevMonthLabel}` : "-";
+      const dreCurrentMonth = currentYear > 0 && currentMonth > 0
+        ? buildResolvedDreSnapshot({ year: currentYear, month: currentMonth, upToMonth: currentMonth })
+        : null;
+      const drePrevMonth = currentYear > 0 && currentMonth > 0
+        ? buildResolvedDreSnapshot({ year: prevYear, month: prevMonth, upToMonth: prevMonth })
+        : null;
+      const dreMetaText = (current, base) => currentYear > 0 && currentMonth > 0 ? `${pctDeltaText(current, base, "Novo")} vs ${prevMonthLabel}` : "-";
+      const dreMoneyMetaText = (current, base) => currentYear > 0 && currentMonth > 0 ? `${moneyDeltaText(current, base)} vs ${prevMonthLabel}` : "-";
+      const drePointsMetaText = (current, base) => currentYear > 0 && currentMonth > 0 ? `${pointsDeltaText(current, base)} vs ${prevMonthLabel}` : "-";
+      const dreCurrentGrossMargin = dreCurrentMonth && Number(dreCurrentMonth.receitaLiquida || 0) > 0
+        ? ((Number(dreCurrentMonth.lucroBruto || 0) / Number(dreCurrentMonth.receitaLiquida || 0)) * 100)
+        : 0;
+      const drePrevGrossMargin = drePrevMonth && Number(drePrevMonth.receitaLiquida || 0) > 0
+        ? ((Number(drePrevMonth.lucroBruto || 0) / Number(drePrevMonth.receitaLiquida || 0)) * 100)
+        : 0;
+      const dreCurrentNetMargin = dreCurrentMonth && Number(dreCurrentMonth.receitaLiquida || 0) > 0
+        ? ((Number(dreCurrentMonth.lucroLiquido || 0) / Number(dreCurrentMonth.receitaLiquida || 0)) * 100)
+        : 0;
+      const drePrevNetMargin = drePrevMonth && Number(drePrevMonth.receitaLiquida || 0) > 0
+        ? ((Number(drePrevMonth.lucroLiquido || 0) / Number(drePrevMonth.receitaLiquida || 0)) * 100)
+        : 0;
 
       setText("dreReceitaBruta", brl(drePeriod.receitaBruta));
       setText("dreReceitaLiquida", brl(drePeriod.receitaLiquida));
@@ -4772,11 +4955,21 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       setText("dreResultadoFinanceiro", brl(drePeriod.resultadoFinanceiro));
       setText("dreImpostosLucro", brl(drePeriod.impostosLucro));
       setText("dreResultadoAntesImpostos", brl(drePeriod.resultadoAntesImpostos));
+      setText("dreReceitaBrutaMeta", dreCurrentMonth && drePrevMonth ? dreMetaText(dreCurrentMonth.receitaBruta, drePrevMonth.receitaBruta) : "-");
+      setText("dreLucroBrutoMeta", dreCurrentMonth && drePrevMonth ? dreMetaText(dreCurrentMonth.lucroBruto, drePrevMonth.lucroBruto) : "-");
+      setText("dreEbitdaMeta", dreCurrentMonth && drePrevMonth ? dreMoneyMetaText(dreCurrentMonth.ebitda, drePrevMonth.ebitda) : "-");
+      setText("dreMargemBrutaMeta", dreCurrentMonth && drePrevMonth ? drePointsMetaText(dreCurrentGrossMargin, drePrevGrossMargin) : "-");
+      setText("dreMargemLiquidaMeta", dreCurrentMonth && drePrevMonth ? drePointsMetaText(dreCurrentNetMargin, drePrevNetMargin) : "-");
       setText("cashEntrada", brl(entries));
       setText("cashSaida", brl(exits));
       setText("cashLiquido", brl(net));
       setText("cashOperacional", brl(operationalNet));
       setText("cashMovimentos", brl(totalMovements));
+      setText("cashEntradaMeta", metaText(monthEntries, prevMonthEntries));
+      setText("cashSaidaMeta", metaText(monthExits, prevMonthExits));
+      setText("cashLiquidoMeta", metaText(monthNet, prevMonthNet));
+      setText("cashOperacionalMeta", metaText(monthOperationalNet, prevMonthOperationalNet));
+      setText("cashMovimentosMeta", metaText(monthMovements, prevMonthMovements));
     }
 
     function renderDreCompositionDetail(selectedItem) {
@@ -4974,13 +5167,8 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       const host = document.getElementById("cashMixChart");
       if (!host) return;
 
-      const monthly = cashMonthlySeries(state.year).map((item) => ({
-        ...item,
-        total: Math.max(item.entradas, item.saidas),
-      }));
-
-      const maxTotal = Math.max(...monthly.map((item) => Number(item.total || 0)), 0);
-      if (!maxTotal) {
+      const monthly = cashMonthlySeries(state.year);
+      if (!monthly.length) {
         host.innerHTML = "<div class='pay-empty'>Sem movimentos de caixa no ano selecionado.</div>";
         return;
       }
@@ -4988,91 +5176,158 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       const title = document.getElementById("cashMixTitle");
       if (title) title.textContent = `Entradas x Saidas por Mes - ${state.year}`;
 
-      const width = 600;
-      const height = 306;
-      const padTop = 18;
-      const padRight = 0;
+      const cumulativeBalances = [];
+      let runningBalance = 0;
+      monthly.forEach((item) => {
+        runningBalance += Number(item.net || 0);
+        cumulativeBalances.push(runningBalance);
+      });
+
+      const width = 620;
+      const height = 320;
+      const padTop = 22;
+      const padRight = 42;
       const padBottom = 46;
-      const padLeft = 0;
+      const padLeft = 42;
       const chartWidth = width - padLeft - padRight;
       const chartHeight = height - padTop - padBottom;
-      const groupWidth = Math.max(38, Math.min(56, chartWidth / Math.max(3, monthly.length * 1.05)));
-      const slot = monthly.length > 1 ? (chartWidth - groupWidth) / (monthly.length - 1) : 0;
-      const innerGap = Math.min(10, Math.max(6, groupWidth * 0.16));
-      const barWidth = Math.max(8, (groupWidth - innerGap) / 2);
-      const colors = {
-        entradas: "#2f7a55",
-        saidas: "#c2644b",
+      const bottomY = padTop + chartHeight;
+
+      const niceCeil = (value) => {
+        const safe = Math.max(1, Number(value || 0));
+        const magnitude = 10 ** Math.floor(Math.log10(safe));
+        const normalized = safe / magnitude;
+        const step = normalized <= 1 ? 1 : (normalized <= 2 ? 2 : (normalized <= 5 ? 5 : 10));
+        return step * magnitude;
       };
-      const gridValues = [0, 0.25, 0.5, 0.75, 1];
-      const yFor = (value) => padTop + chartHeight - (chartHeight * (Number(value || 0) / maxTotal));
-      const xFor = (idx) => monthly.length > 1 ? padLeft + (slot * idx) : padLeft + ((chartWidth - groupWidth) / 2);
-
-      const grid = gridValues.map((ratio) => {
-        const value = maxTotal * ratio;
-        const y = yFor(value);
-        return `
-          <line x1="${padLeft}" y1="${y.toFixed(3)}" x2="${(width - padRight).toFixed(3)}" y2="${y.toFixed(3)}"></line>
-        `;
-      }).join("");
-
-      const bars = monthly.map((item, idx) => {
-        const groupX = xFor(idx);
-        const centerX = groupX + (groupWidth / 2);
-        const monthLabelX = idx === 0 ? 0 : (idx === monthly.length - 1 ? width : centerX);
-        const monthLabelAnchor = idx === 0 ? "start" : (idx === monthly.length - 1 ? "end" : "middle");
-        const active = !state.yearScope && Number(state.month || 0) === item.month ? "active" : "";
-        const entryHeight = chartHeight * (Number(item.entradas || 0) / maxTotal);
-        const exitHeight = chartHeight * (Number(item.saidas || 0) / maxTotal);
-        const entryY = padTop + chartHeight - entryHeight;
-        const exitY = padTop + chartHeight - exitHeight;
-        const entryX = groupX;
-        const exitX = groupX + barWidth + innerGap;
-        const showValueLabels = monthly.length <= 6;
-        let entryLabelY = Math.max(18, entryY - 10);
-        let exitLabelY = Math.max(18, exitY - 10);
-        if (showValueLabels && Math.abs(entryLabelY - exitLabelY) < 14) {
-          entryLabelY = Math.max(18, entryLabelY - 10);
-          exitLabelY = Math.min(height - 54, exitLabelY + 4);
+      const interpolateAxisTicks = (maxValue, minValue, count = 5) => (
+        Array.from({ length: count }, (_, idx) => {
+          const ratio = idx / Math.max(1, count - 1);
+          return maxValue - ((maxValue - minValue) * ratio);
+        })
+      );
+      const axisLabel = (value) => {
+        const num = Number(value || 0);
+        const abs = Math.abs(num);
+        if (abs >= 1000000) {
+          const decimals = abs >= 10000000 || Math.abs(abs % 1000000) < 1 ? 0 : 1;
+          return `${(num / 1000000).toFixed(decimals)}M`;
         }
+        if (abs >= 1000) {
+          const decimals = abs >= 100000 ? 0 : 1;
+          return `${(num / 1000).toFixed(decimals)}k`;
+        }
+        return `${Math.round(num)}`;
+      };
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value || 0)));
+
+      const barAxisMax = niceCeil(Math.max(...monthly.map((item) => Math.max(Number(item.entradas || 0), Number(item.saidas || 0))), 1) * 1.08);
+      const barAxisMin = 0;
+      const rawBalanceMax = Math.max(...cumulativeBalances, 0);
+      const rawBalanceMin = Math.min(...cumulativeBalances, 0);
+      const rawBalanceSpan = Math.max(1, rawBalanceMax - rawBalanceMin);
+      let balanceAxisMax = rawBalanceMax > 0 ? niceCeil(rawBalanceMax + (rawBalanceSpan * 0.12)) : 0;
+      let balanceAxisMin = rawBalanceMin < 0 ? (-1 * niceCeil(Math.abs(rawBalanceMin) + (rawBalanceSpan * 0.12))) : 0;
+      if (balanceAxisMax === balanceAxisMin) {
+        if (balanceAxisMax === 0) balanceAxisMax = 1;
+        else if (balanceAxisMax > 0) balanceAxisMin = 0;
+        else balanceAxisMax = 0;
+      }
+
+      const barTicks = interpolateAxisTicks(barAxisMax, barAxisMin);
+      const balanceTicks = interpolateAxisTicks(balanceAxisMax, balanceAxisMin);
+      const yForBar = (value) => padTop + (((barAxisMax - clamp(value, barAxisMin, barAxisMax)) / Math.max(1, barAxisMax - barAxisMin)) * chartHeight);
+      const yForBalance = (value) => padTop + (((balanceAxisMax - clamp(value, balanceAxisMin, balanceAxisMax)) / Math.max(1, balanceAxisMax - balanceAxisMin)) * chartHeight);
+      const formatBalanceValue = (value) => {
+        const abs = Math.abs(Number(value || 0));
+        if (abs >= 1000000) return `${value < 0 ? "-" : ""}${(abs / 1000000).toFixed(1)}M`;
+        if (abs >= 1000) return `${value < 0 ? "-" : ""}${Math.round(abs / 1000)}k`;
+        return `${Math.round(value || 0)}`;
+      };
+
+      const groupWidth = chartWidth / Math.max(1, monthly.length);
+      const barGap = Math.min(16, groupWidth * 0.18);
+      const innerWidth = Math.max(30, groupWidth - barGap);
+      const pairGap = Math.min(10, innerWidth * 0.12);
+      const barWidth = Math.max(11, (innerWidth - pairGap) / 2);
+      const xFor = (idx) => padLeft + (groupWidth * idx) + ((groupWidth - innerWidth) / 2);
+
+      const grid = barTicks.map((value, idx) => {
+        const y = yForBar(value);
+        const rightValue = balanceTicks[idx] ?? 0;
         return `
           <g>
-            <rect
-              class="expense-cash-stack-bar cash-mix-bar operacional ${active}"
-              x="${entryX.toFixed(3)}"
-              y="${entryY.toFixed(3)}"
-              width="${barWidth.toFixed(3)}"
-              height="${Math.max(entryHeight, 0).toFixed(3)}"
-              rx="6"
-              ry="6"
-              data-cash-mix-month="${item.month}"
-            ><title>${escapeHtml(`${item.label}: Entradas ${brl(item.entradas)}`)}</title></rect>
-            <rect
-              class="expense-cash-stack-bar cash-mix-bar financeira ${active}"
-              x="${exitX.toFixed(3)}"
-              y="${exitY.toFixed(3)}"
-              width="${barWidth.toFixed(3)}"
-              height="${Math.max(exitHeight, 0).toFixed(3)}"
-              rx="6"
-              ry="6"
-              data-cash-mix-month="${item.month}"
-            ><title>${escapeHtml(`${item.label}: Saidas ${brl(item.saidas)}`)}</title></rect>
-            ${showValueLabels && Number(item.entradas || 0) > 0 ? `<text class="expense-cash-stack-label" x="${(entryX + (barWidth / 2)).toFixed(3)}" y="${entryLabelY.toFixed(3)}">${escapeHtml(brlCompact(item.entradas).replace(/^R\$\s?/, ""))}</text>` : ""}
-            ${showValueLabels && Number(item.saidas || 0) > 0 ? `<text class="expense-cash-stack-label" x="${(exitX + (barWidth / 2)).toFixed(3)}" y="${exitLabelY.toFixed(3)}">${escapeHtml(brlCompact(item.saidas).replace(/^R\$\s?/, ""))}</text>` : ""}
-            <text class="cash-mix-month ${active}" x="${monthLabelX.toFixed(3)}" y="${(height - 10).toFixed(3)}" text-anchor="${monthLabelAnchor}" data-cash-mix-month="${item.month}">${escapeHtml(item.label.slice(0, 3))}</text>
+            <line x1="${padLeft}" y1="${y.toFixed(3)}" x2="${(width - padRight).toFixed(3)}" y2="${y.toFixed(3)}"></line>
+            <text class="projection-combo-axis-label left" x="${(padLeft - 10).toFixed(3)}" y="${y.toFixed(3)}">${escapeHtml(axisLabel(value))}</text>
+            <text class="projection-combo-axis-label right" x="${(width - padRight + 10).toFixed(3)}" y="${y.toFixed(3)}">${escapeHtml(axisLabel(rightValue))}</text>
           </g>
         `;
       }).join("");
 
+      const linePath = monthly.map((item, idx) => {
+        const x = xFor(idx) + (innerWidth / 2);
+        const y = yForBalance(cumulativeBalances[idx]);
+        return `${idx === 0 ? "M" : "L"} ${x.toFixed(3)} ${y.toFixed(3)}`;
+      }).join(" ");
+
+      const bars = monthly.map((item, idx) => {
+        const baseX = xFor(idx);
+        const entryHeight = Math.max(0, bottomY - yForBar(item.entradas));
+        const exitHeight = Math.max(0, bottomY - yForBar(item.saidas));
+        const entryY = bottomY - entryHeight;
+        const exitY = bottomY - exitHeight;
+        const entryLabelY = Math.max(12, entryY - 7);
+        const exitLabelY = Math.max(12, exitY - 7);
+        const entryLabel = Number(item.entradas || 0) > 0
+          ? `<text class="projection-combo-bar-label entry" x="${(baseX + (barWidth / 2)).toFixed(3)}" y="${entryLabelY.toFixed(3)}">${escapeHtml(brlCompact(item.entradas).replace(/^R\$\s?/, ""))}</text>`
+          : "";
+        const exitLabel = Number(item.saidas || 0) > 0
+          ? `<text class="projection-combo-bar-label exit" x="${(baseX + barWidth + pairGap + (barWidth / 2)).toFixed(3)}" y="${exitLabelY.toFixed(3)}">${escapeHtml(brlCompact(item.saidas).replace(/^R\$\s?/, ""))}</text>`
+          : "";
+        const active = !state.yearScope && Number(state.month || 0) === item.month ? "active" : "";
+        return `
+          <g>
+            <rect class="projection-combo-bar entry ${active}" x="${baseX.toFixed(3)}" y="${entryY.toFixed(3)}" width="${barWidth.toFixed(3)}" height="${entryHeight.toFixed(3)}" rx="6" ry="6" data-cash-mix-month="${item.month}"><title>${escapeHtml(`${item.label}: Entradas ${brl(item.entradas)}`)}</title></rect>
+            <rect class="projection-combo-bar exit ${active}" x="${(baseX + barWidth + pairGap).toFixed(3)}" y="${exitY.toFixed(3)}" width="${barWidth.toFixed(3)}" height="${exitHeight.toFixed(3)}" rx="6" ry="6" data-cash-mix-month="${item.month}"><title>${escapeHtml(`${item.label}: Saídas ${brl(item.saidas)}`)}</title></rect>
+            ${entryLabel}
+            ${exitLabel}
+          </g>
+        `;
+      }).join("");
+
+      const nodes = monthly.map((item, idx) => {
+        const x = xFor(idx) + (innerWidth / 2);
+        const balance = cumulativeBalances[idx];
+        const y = yForBalance(balance);
+        const active = !state.yearScope && Number(state.month || 0) === item.month ? "active" : "";
+        const showValue = active || idx === cumulativeBalances.length - 1;
+        const labelY = Math.max(16, Math.min(bottomY - 10, y - 12));
+        return `
+          <g class="projection-combo-node ${active}" data-cash-mix-month="${item.month}">
+            <circle cx="${x.toFixed(3)}" cy="${y.toFixed(3)}" r="5"></circle>
+            <title>${escapeHtml(`${item.label}: Saldo acumulado ${brl(balance)}`)}</title>
+          </g>
+          ${showValue ? `<text class="projection-combo-value" x="${x.toFixed(3)}" y="${labelY.toFixed(3)}">${escapeHtml(formatBalanceValue(balance))}</text>` : ""}
+          <text class="projection-combo-month ${active}" x="${x.toFixed(3)}" y="${(height - 12).toFixed(3)}" data-cash-mix-month="${item.month}">${escapeHtml(item.label.slice(0, 3))}</text>
+        `;
+      }).join("");
+
       host.innerHTML = `
-        <svg class="expense-cash-stack-svg" viewBox="0 0 ${width} ${height}" aria-label="Entradas e saidas de caixa por mes">
-          <g class="expense-cash-stack-grid">${grid}</g>
-          <g class="expense-cash-stack-axis"></g>
+        <svg class="projection-combo-svg" viewBox="0 0 ${width} ${height}" aria-label="Entradas e saídas de caixa por mês com saldo acumulado">
+          <g class="projection-combo-grid">${grid}</g>
+          <g class="projection-combo-axis">
+            <line x1="${padLeft}" y1="${padTop.toFixed(3)}" x2="${padLeft}" y2="${bottomY.toFixed(3)}"></line>
+            <line x1="${(width - padRight).toFixed(3)}" y1="${padTop.toFixed(3)}" x2="${(width - padRight).toFixed(3)}" y2="${bottomY.toFixed(3)}"></line>
+            <line x1="${padLeft}" y1="${bottomY.toFixed(3)}" x2="${(width - padRight).toFixed(3)}" y2="${bottomY.toFixed(3)}"></line>
+          </g>
           ${bars}
+          <path class="projection-combo-line" d="${linePath}"></path>
+          ${nodes}
         </svg>
         <div class="expense-cash-stack-legend">
-          <span><i class="expense-cash-stack-swatch" style="background:${colors.entradas}"></i>Entradas</span>
-          <span><i class="expense-cash-stack-swatch" style="background:${colors.saidas}"></i>Saidas</span>
+          <span><i class="expense-cash-stack-swatch" style="background:#9dddb7"></i>Entradas</span>
+          <span><i class="expense-cash-stack-swatch" style="background:#f2b0aa"></i>Saídas</span>
+          <span><i class="expense-cash-stack-swatch" style="background:#355548"></i>Saldo acumulado</span>
         </div>
       `;
 
@@ -5105,8 +5360,8 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       }
 
       const colors = {
-        Operacional: "#2f7a55",
-        Financeira: "#d9865e",
+        Operacional: "#f3c38d",
+        Financeira: "#cfd6dd",
       };
       const total = items.reduce((acc, item) => acc + Number(item.value || 0), 0) || 1;
       const viewWidth = 620;
@@ -5411,6 +5666,32 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       `).join("");
     }
 
+    function renderProjectionScenarioFilter() {
+      const host = document.getElementById("projScenarioFilter");
+      if (!host) return;
+
+      host.innerHTML = `
+        <div class="projection-scenario-bar">
+          <div class="projection-scenario-copy">
+            <span class="projection-scenario-kicker">Cenário da projeção</span>
+            <span class="projection-scenario-note">${state.projExcludeImportedPurchase ? "Sem a categoria de compra mercadoria importada para enxergar o caixa sem essa pressão." : "Com todas as saídas orçadas, incluindo compra mercadoria importada."}</span>
+          </div>
+          <div class="projection-scenario-actions">
+            <button class="cash-table-filter-btn ${!state.projExcludeImportedPurchase ? "active" : ""}" type="button" data-proj-scenario="base">Com importação</button>
+            <button class="cash-table-filter-btn ${state.projExcludeImportedPurchase ? "active" : ""}" type="button" data-proj-scenario="without-imported-purchase">Sem importação</button>
+          </div>
+        </div>
+      `;
+
+      host.querySelectorAll("[data-proj-scenario]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const mode = String(el.getAttribute("data-proj-scenario") || "");
+          state.projExcludeImportedPurchase = mode === "without-imported-purchase";
+          render();
+        });
+      });
+    }
+
     function renderProjectionOverview() {
       const setText = (id, value) => {
         const el = document.getElementById(id);
@@ -5422,11 +5703,16 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       const totalEntries = sum(periods, (item) => item.entries);
       const totalExits = sum(periods, (item) => item.exits);
       const finalProjectedBalance = periods.reduce((acc, item) => acc + Number(item.net || 0), 0);
+      const monthCount = Math.max(1, periods.length);
+      const avgEntries = totalEntries / monthCount;
+      const avgExits = totalExits / monthCount;
 
       setText("projYearEntry", brl(totalEntries));
       setText("projYearExit", brl(totalExits));
       setText("projYearNet", brl(finalProjectedBalance));
       setText("projFocusMonth", selected ? selected.fullLabel : "-");
+      setText("projYearEntryAvg", `Média/Mês: ${brlCompact(avgEntries)}`);
+      setText("projYearExitAvg", `Média/Mês: ${brlCompact(avgExits)}`);
     }
 
     function renderProjectionMonthPie() {
@@ -5521,17 +5807,11 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       const periods = projectionPeriods();
       host.innerHTML = periods.map((item) => {
         const active = item.year === Number(state.projYear || 0) && item.month === Number(state.projMonth || 0) ? "active" : "";
-        const hasData = Number(item.entries || 0) !== 0 || Number(item.exits || 0) !== 0;
-        const mainClass = item.net < 0 ? "down" : "";
+        const shortLabel = `${(MONTHS[item.month - 1] || "").toLowerCase()} ${String(item.year).slice(-2)}`;
         return `
-          <button class="projection-month-btn ${active}" type="button" data-proj-year="${item.year}" data-proj-month="${item.month}">
+          <button class="projection-month-btn ${active}" type="button" data-proj-year="${item.year}" data-proj-month="${item.month}" aria-pressed="${active ? "true" : "false"}">
             <div class="projection-month-head">
-              <span class="projection-month-name">${escapeHtml(item.fullLabel)}</span>
-            </div>
-            <div class="projection-month-main ${mainClass}">${hasData ? escapeHtml(brlCompact(item.net)) : "-"}</div>
-            <div class="projection-month-meta">
-              <span>Entradas: ${escapeHtml(brlCompact(item.entries))}</span>
-              <span>Saídas: ${escapeHtml(brlCompact(item.exits))}</span>
+              <span class="projection-month-name">${escapeHtml(shortLabel)}</span>
             </div>
           </button>
         `;
@@ -5550,61 +5830,114 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       const host = document.getElementById("projComboChart");
       if (!host) return;
 
-      const periods = projectionPeriods();
+      const periods = projectionPeriods().map((item) => ({
+        ...item,
+        label: MONTHS[item.month - 1] || String(item.month).padStart(2, "0"),
+      }));
       if (!periods.length) {
         host.innerHTML = "<div class='pay-empty'>Sem projeção para exibir no gráfico.</div>";
         return;
       }
+
       let runningBalance = 0;
       const cumulativeBalances = periods.map((item) => {
         runningBalance += Number(item.net || 0);
         return runningBalance;
       });
 
-      const width = 980;
-      const height = 280;
-      const padTop = 18;
-      const padRight = 12;
-      const padBottom = 44;
-      const padLeft = 12;
+      const width = 1080;
+      const height = 340;
+      const padTop = 22;
+      const padRight = 78;
+      const padBottom = 56;
+      const padLeft = 78;
       const chartWidth = width - padLeft - padRight;
       const chartHeight = height - padTop - padBottom;
-      const maxPositive = Math.max(
-        ...periods.map((item) => Math.max(Number(item.entries || 0), Number(item.exits || 0))),
-        ...cumulativeBalances,
-        0
-      );
-      const minNegative = Math.min(...cumulativeBalances, 0);
-      const span = Math.max(1, maxPositive - minNegative);
-      const zeroY = padTop + ((maxPositive / span) * chartHeight);
-      const groupWidth = chartWidth / Math.max(1, periods.length);
-      const barGap = Math.min(10, groupWidth * 0.12);
-      const innerWidth = Math.max(24, groupWidth - barGap);
-      const pairGap = Math.min(8, innerWidth * 0.1);
-      const barWidth = Math.max(10, (innerWidth - pairGap) / 2);
-      const xFor = (idx) => padLeft + (groupWidth * idx) + ((groupWidth - innerWidth) / 2);
-      const yFor = (value) => padTop + (((maxPositive - Number(value || 0)) / span) * chartHeight);
+      const bottomY = padTop + chartHeight;
 
-      const gridValues = [maxPositive, maxPositive * 0.5, 0, minNegative * 0.5, minNegative]
-        .filter((value, idx, arr) => Number.isFinite(value) && arr.findIndex((item) => Math.abs(item - value) < 0.0001) === idx)
-        .sort((a, b) => b - a);
-      const grid = gridValues.map((value) => {
-        const y = yFor(value);
-        return `<line x1="${padLeft}" y1="${y.toFixed(3)}" x2="${(width - padRight).toFixed(3)}" y2="${y.toFixed(3)}"></line>`;
+      const niceCeil = (value) => {
+        const safe = Math.max(1, Number(value || 0));
+        const magnitude = 10 ** Math.floor(Math.log10(safe));
+        const normalized = safe / magnitude;
+        const step = normalized <= 1 ? 1 : (normalized <= 2 ? 2 : (normalized <= 5 ? 5 : 10));
+        return step * magnitude;
+      };
+      const interpolateAxisTicks = (maxValue, minValue, count = 5) => (
+        Array.from({ length: count }, (_, idx) => {
+          const ratio = idx / Math.max(1, count - 1);
+          return maxValue - ((maxValue - minValue) * ratio);
+        })
+      );
+      const axisLabel = (value) => {
+        const num = Number(value || 0);
+        const abs = Math.abs(num);
+        if (abs >= 1000000) {
+          const decimals = abs >= 10000000 || Math.abs(abs % 1000000) < 1 ? 0 : 1;
+          return `${(num / 1000000).toFixed(decimals)}M`;
+        }
+        if (abs >= 1000) {
+          const decimals = abs >= 100000 ? 0 : 1;
+          return `${(num / 1000).toFixed(decimals)}k`;
+        }
+        return `${Math.round(num)}`;
+      };
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value || 0)));
+
+      const barAxisMax = niceCeil(Math.max(...periods.map((item) => Math.max(Number(item.entries || 0), Number(item.exits || 0))), 1) * 1.08);
+      const barAxisMin = 0;
+      const rawBalanceMax = Math.max(...cumulativeBalances, 0);
+      const rawBalanceMin = Math.min(...cumulativeBalances, 0);
+      const rawBalanceSpan = Math.max(1, rawBalanceMax - rawBalanceMin);
+      let balanceAxisMax = rawBalanceMax > 0 ? niceCeil(rawBalanceMax + (rawBalanceSpan * 0.12)) : 0;
+      let balanceAxisMin = rawBalanceMin < 0 ? (-1 * niceCeil(Math.abs(rawBalanceMin) + (rawBalanceSpan * 0.12))) : 0;
+      if (balanceAxisMax === balanceAxisMin) {
+        if (balanceAxisMax === 0) balanceAxisMax = 1;
+        else if (balanceAxisMax > 0) balanceAxisMin = 0;
+        else balanceAxisMax = 0;
+      }
+
+      const barTicks = interpolateAxisTicks(barAxisMax, barAxisMin);
+      const balanceTicks = interpolateAxisTicks(balanceAxisMax, balanceAxisMin);
+      const yForBar = (value) => padTop + (((barAxisMax - clamp(value, barAxisMin, barAxisMax)) / Math.max(1, barAxisMax - barAxisMin)) * chartHeight);
+      const yForBalance = (value) => padTop + (((balanceAxisMax - clamp(value, balanceAxisMin, balanceAxisMax)) / Math.max(1, balanceAxisMax - balanceAxisMin)) * chartHeight);
+      const formatBalanceValue = (value) => {
+        const abs = Math.abs(Number(value || 0));
+        if (abs >= 1000000) return `${value < 0 ? "-" : ""}${(abs / 1000000).toFixed(1)}M`;
+        if (abs >= 1000) return `${value < 0 ? "-" : ""}${Math.round(abs / 1000)}k`;
+        return `${Math.round(value || 0)}`;
+      };
+
+      const groupWidth = chartWidth / Math.max(1, periods.length);
+      const barGap = Math.min(16, groupWidth * 0.18);
+      const innerWidth = Math.max(30, groupWidth - barGap);
+      const pairGap = Math.min(10, innerWidth * 0.12);
+      const barWidth = Math.max(11, (innerWidth - pairGap) / 2);
+      const xFor = (idx) => padLeft + (groupWidth * idx) + ((groupWidth - innerWidth) / 2);
+
+      const grid = barTicks.map((value, idx) => {
+        const y = yForBar(value);
+        const rightValue = balanceTicks[idx] ?? 0;
+        return `
+          <g>
+            <line x1="${padLeft}" y1="${y.toFixed(3)}" x2="${(width - padRight).toFixed(3)}" y2="${y.toFixed(3)}"></line>
+            <text class="projection-combo-axis-label left" x="${(padLeft - 10).toFixed(3)}" y="${y.toFixed(3)}">${escapeHtml(axisLabel(value))}</text>
+            <text class="projection-combo-axis-label right" x="${(width - padRight + 10).toFixed(3)}" y="${y.toFixed(3)}">${escapeHtml(axisLabel(rightValue))}</text>
+          </g>
+        `;
       }).join("");
 
       const linePath = periods.map((item, idx) => {
         const x = xFor(idx) + (innerWidth / 2);
-        const y = yFor(cumulativeBalances[idx]);
+        const y = yForBalance(cumulativeBalances[idx]);
         return `${idx === 0 ? "M" : "L"} ${x.toFixed(3)} ${y.toFixed(3)}`;
       }).join(" ");
 
       const bars = periods.map((item, idx) => {
         const baseX = xFor(idx);
-        const entryHeight = Math.max(0, zeroY - yFor(item.entries));
-        const exitHeight = Math.max(0, zeroY - yFor(item.exits));
-        const entryY = zeroY - entryHeight;
-        const exitY = zeroY - exitHeight;
+        const entryHeight = Math.max(0, bottomY - yForBar(item.entries));
+        const exitHeight = Math.max(0, bottomY - yForBar(item.exits));
+        const entryY = bottomY - entryHeight;
+        const exitY = bottomY - exitHeight;
         const entryLabelY = Math.max(12, entryY - 7);
         const exitLabelY = Math.max(12, exitY - 7);
         const entryLabel = Number(item.entries || 0) > 0
@@ -5627,30 +5960,36 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       const nodes = periods.map((item, idx) => {
         const x = xFor(idx) + (innerWidth / 2);
         const balance = cumulativeBalances[idx];
-        const y = yFor(balance);
+        const y = yForBalance(balance);
         const active = item.year === Number(state.projYear || 0) && item.month === Number(state.projMonth || 0) ? "active" : "";
+        const showValue = active || idx === cumulativeBalances.length - 1;
+        const labelY = Math.max(16, Math.min(bottomY - 10, y - 12));
         return `
           <g class="projection-combo-node ${active}" data-proj-chart-year="${item.year}" data-proj-chart-month="${item.month}">
             <circle cx="${x.toFixed(3)}" cy="${y.toFixed(3)}" r="5"></circle>
             <title>${escapeHtml(`${item.fullLabel}: Saldo acumulado ${brl(balance)}`)}</title>
           </g>
-          <text class="projection-combo-value" x="${x.toFixed(3)}" y="${(balance >= 0 ? y - 10 : y + 18).toFixed(3)}">${escapeHtml(brlCompact(balance).replace(/^R\$\s?/, ""))}</text>
+          ${showValue ? `<text class="projection-combo-value" x="${x.toFixed(3)}" y="${labelY.toFixed(3)}">${escapeHtml(formatBalanceValue(balance))}</text>` : ""}
           <text class="projection-combo-month ${active}" x="${x.toFixed(3)}" y="${(height - 12).toFixed(3)}" data-proj-chart-year="${item.year}" data-proj-chart-month="${item.month}">${escapeHtml(item.label)}</text>
         `;
       }).join("");
 
       host.innerHTML = `
-        <svg class="projection-combo-svg" viewBox="0 0 ${width} ${height}" aria-label="Entradas, saídas e saldo acumulado projetado por mês">
+        <svg class="projection-combo-svg" viewBox="0 0 ${width} ${height}" aria-label="Entradas e saídas mensais com linha de saldo acumulado">
           <g class="projection-combo-grid">${grid}</g>
-          <g class="projection-combo-axis"><line x1="${padLeft}" y1="${zeroY.toFixed(3)}" x2="${(width - padRight).toFixed(3)}" y2="${zeroY.toFixed(3)}"></line></g>
+          <g class="projection-combo-axis">
+            <line x1="${padLeft}" y1="${padTop.toFixed(3)}" x2="${padLeft}" y2="${bottomY.toFixed(3)}"></line>
+            <line x1="${(width - padRight).toFixed(3)}" y1="${padTop.toFixed(3)}" x2="${(width - padRight).toFixed(3)}" y2="${bottomY.toFixed(3)}"></line>
+            <line x1="${padLeft}" y1="${bottomY.toFixed(3)}" x2="${(width - padRight).toFixed(3)}" y2="${bottomY.toFixed(3)}"></line>
+          </g>
           ${bars}
           <path class="projection-combo-line" d="${linePath}"></path>
           ${nodes}
         </svg>
         <div class="expense-cash-stack-legend">
-          <span><i class="expense-cash-stack-swatch" style="background:#20906a"></i>Entradas</span>
-          <span><i class="expense-cash-stack-swatch" style="background:#d46d43"></i>Saídas</span>
-          <span><i class="expense-cash-stack-swatch" style="background:#214936"></i>Saldo acumulado</span>
+          <span><i class="expense-cash-stack-swatch" style="background:#9dddb7"></i>Entradas</span>
+          <span><i class="expense-cash-stack-swatch" style="background:#f2b0aa"></i>Saídas</span>
+          <span><i class="expense-cash-stack-swatch" style="background:#355548"></i>Saldo acumulado</span>
           <span>Clique no mês para sincronizar a composição abaixo</span>
         </div>
       `;
@@ -6332,11 +6671,6 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         .slice(0, 10)
         .map((row) => ({ name: row.Produto, value: Number(row.Quantidade || 0) }));
       const classes = rankBy(baseRows, inventoryFamilyOf, (row) => Number(row.Quantidade || 0)).slice(0, 10);
-      const values = rows
-        .slice()
-        .sort((a, b) => (Number(b.CustoTotal || 0) - Number(a.CustoTotal || 0)) || (Number(b.Quantidade || 0) - Number(a.Quantidade || 0)))
-        .slice(0, 10)
-        .map((row) => ({ name: row.Produto, value: Number(row.CustoTotal || 0) }));
 
       renderInventoryFamilyPie("inventoryClassesList", classes);
       renderReadonlyHbarList("inventoryItemsList", items, (value) => `${intBR(value)} un`, {
@@ -6344,6 +6678,11 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         onClick: (entry) => setInventoryItemFilter(entry.name),
         emptyText: "Sem itens com saldo no filtro atual.",
       });
+      const values = rows
+        .slice()
+        .sort((a, b) => (Number(b.CustoTotal || 0) - Number(a.CustoTotal || 0)) || (Number(b.Quantidade || 0) - Number(a.Quantidade || 0)))
+        .slice(0, 10)
+        .map((row) => ({ name: row.Produto, value: Number(row.CustoTotal || 0) }));
       renderReadonlyHbarList("inventoryClientsList", values, brlCompact, {
         isActive: (entry) => entry.name === state.inventoryItem,
         onClick: (entry) => setInventoryItemFilter(entry.name),
@@ -6399,11 +6738,49 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       return state.yearScope ? String(state.year) : `${monthName}/${state.year}`;
     }
 
+    function renderExpenseScenarioFilter() {
+      const host = document.getElementById("expenseScenarioFilter");
+      if (!host) return;
+
+      host.innerHTML = `
+        <div class="projection-scenario-bar">
+          <div class="projection-scenario-copy">
+            <span class="projection-scenario-kicker">Cenário da despesa</span>
+            <span class="projection-scenario-note">${state.expenseExcludeImportedPurchase ? "Sem a despesa de importação para avaliar o cenário ajustado." : "Com todas as despesas, incluindo a importação."}</span>
+          </div>
+          <div class="projection-scenario-actions">
+            <button class="cash-table-filter-btn ${!state.expenseExcludeImportedPurchase ? "active" : ""}" type="button" data-expense-scenario="with-import">Com importação</button>
+            <button class="cash-table-filter-btn ${state.expenseExcludeImportedPurchase ? "active" : ""}" type="button" data-expense-scenario="without-import">Sem importação</button>
+          </div>
+        </div>
+      `;
+
+      host.querySelectorAll("[data-expense-scenario]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const mode = String(el.getAttribute("data-expense-scenario") || "");
+          state.expenseExcludeImportedPurchase = mode === "without-import";
+          render();
+        });
+      });
+    }
+
     function renderExpenseKpis() {
       const rows = expenseScopeRows();
       const total = sum(rows, (r) => r.ValorLiquido);
       const launches = rows.length;
       const avgTicket = launches ? total / launches : 0;
+      const currentYear = Number(state.year || 0);
+      const currentMonth = Number(state.month || 0);
+      const prevMonth = currentMonth <= 1 ? 12 : currentMonth - 1;
+      const prevYear = currentMonth <= 1 ? currentYear - 1 : currentYear;
+      const currentMonthRows = currentYear > 0 && currentMonth > 0
+        ? expenseRowsByContext({ year: currentYear, month: currentMonth, week: null })
+        : [];
+      const prevMonthRows = prevYear > 0
+        ? expenseRowsByContext({ year: prevYear, month: prevMonth, week: null })
+        : [];
+      const currentMonthTotal = sum(currentMonthRows, (r) => Number(r.ValorLiquido || 0));
+      const prevMonthTotal = sum(prevMonthRows, (r) => Number(r.ValorLiquido || 0));
       const topNature = rankBy(rows, expenseNatureOf, (r) => Number(r.ValorLiquido || 0))[0] || null;
       const topLaunch = rows.reduce((best, row) => {
         if (!best) return row;
@@ -6416,7 +6793,8 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       };
 
       setText("expTotal", rows.length ? brlCompact(total) : "-");
-      setText("expCount", rows.length ? intBR(launches) : "-");
+      setText("expVarPrev", currentYear > 0 && currentMonth > 0 ? pctDeltaText(currentMonthTotal, prevMonthTotal, "Novo") : "-");
+      setText("expVarPrevMeta", currentYear > 0 && currentMonth > 0 ? `${MONTHS[currentMonth - 1]} ${String(currentYear).slice(-2)} vs ${MONTHS[prevMonth - 1]} ${String(prevYear).slice(-2)}` : "-");
       setText("expTopNature", topNature ? topNature.name : "-");
       setText("expTopNatureValue", topNature ? brlCompact(topNature.value) : "-");
       setText("expAvgTicket", rows.length ? brlCompact(avgTicket) : "-");
@@ -6428,6 +6806,11 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
     function renderExpenseMonthBars() {
       const host = document.getElementById("expenseMonthBars");
       if (!host) return;
+      const rawYearRows = expenseRowsByContext({ year: state.year, month: null, week: null });
+      const lastMonthWithInfo = MONTHS.reduce((last, _label, idx) => {
+        const month = idx + 1;
+        return rawYearRows.some((r) => Number(r.MesNumero) === month) ? idx : last;
+      }, -1);
 
       const valsByMonth = MONTHS.map((_, idx) => {
         const mm = idx + 1;
@@ -6446,6 +6829,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         labels: MONTHS,
         values: valsByMonth,
         activeIndex,
+        dashedFromIndex: lastMonthWithInfo >= 0 && lastMonthWithInfo < (MONTHS.length - 1) ? lastMonthWithInfo + 1 : null,
         dataAttr: "expense-month-bar",
         tagText: MONTHS[activeIndex] || MONTHS[0],
         fillId: "trendFillExpenseMonth",
@@ -6586,8 +6970,8 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       }
 
       const colors = {
-        Operacional: "#2f7a55",
-        Financeira: "#d9865e",
+        Operacional: "#f3c38d",
+        Financeira: "#cfd6dd",
       };
       const total = items.reduce((acc, item) => acc + Number(item.value || 0), 0) || 1;
       const viewWidth = 620;
@@ -6956,6 +7340,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       labels,
       values,
       activeIndex,
+      dashedFromIndex = null,
       dataAttr,
       tagText,
       fillId,
@@ -6998,7 +7383,14 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         return `<line x1="${left}" y1="${y.toFixed(2)}" x2="${(w - right).toFixed(2)}" y2="${y.toFixed(2)}"></line>`;
       }).join("");
 
-      const linePath = points.map((p, i) => `${i ? "L" : "M"} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(" ");
+      const buildPath = (pathPoints) => pathPoints.map((p, i) => `${i ? "L" : "M"} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(" ");
+      const linePath = buildPath(points);
+      let solidLinePath = linePath;
+      let dashedLinePath = "";
+      if (Number.isInteger(dashedFromIndex) && dashedFromIndex > 0 && dashedFromIndex < points.length) {
+        solidLinePath = buildPath(points.slice(0, dashedFromIndex));
+        dashedLinePath = buildPath(points.slice(dashedFromIndex - 1));
+      }
       const areaPath = `${linePath} L ${(left + step * (n - 1)).toFixed(2)} ${zeroY.toFixed(2)} L ${left.toFixed(2)} ${zeroY.toFixed(2)} Z`;
 
       const labelsSvg = points.map((p, i) => `
@@ -7040,7 +7432,8 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
           </defs>
           <g class="trend-grid">${grid}</g>
           <path class="trend-area" d="${areaPath}" fill="url(#${fillId})"></path>
-          <path class="trend-line" d="${linePath}"></path>
+          <path class="trend-line" d="${solidLinePath}"></path>
+          ${dashedLinePath ? `<path class="trend-line dashed" d="${dashedLinePath}"></path>` : ""}
           <g class="trend-x">${labelsSvg}</g>
           <g class="trend-nodes">${nodes}</g>
         </svg>
@@ -7050,6 +7443,11 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
 
     function renderMonthBars() {
       const host = document.getElementById("monthBars");
+      const rawYearRows = data.vendas.filter((r) => Number(r.Ano) === Number(state.year));
+      const lastMonthWithInfo = MONTHS.reduce((last, _label, idx) => {
+        const month = idx + 1;
+        return rawYearRows.some((r) => Number(r.MesNumero) === month) ? idx : last;
+      }, -1);
       const valsByMonth = MONTHS.map((_, idx) => {
         const mm = idx + 1;
         const rows = rowsByContext({ month: mm });
@@ -7066,6 +7464,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         labels: MONTHS,
         values: vals,
         activeIndex,
+        dashedFromIndex: lastMonthWithInfo >= 0 && lastMonthWithInfo < (MONTHS.length - 1) ? lastMonthWithInfo + 1 : null,
         dataAttr: "month-bar",
         tagText: MONTHS[activeIndex] || MONTHS[0],
         fillId: "trendFillMonth",
@@ -7670,6 +8069,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       renderCashRankings();
       renderCashTable();
       renderProjectionOverview();
+      renderProjectionScenarioFilter();
       renderProjectionComboChart();
       renderProjectionMonthGrid();
       renderProjectionBreakdowns();
@@ -7680,6 +8080,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       renderInventoryWeekBars();
       renderInventoryRankings();
       renderInventoryTable();
+      renderExpenseScenarioFilter();
       renderExpenseKpis();
       renderExpenseMonthBars();
       renderExpenseCashMonthStack();
