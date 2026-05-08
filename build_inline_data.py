@@ -11,6 +11,20 @@ import openpyxl
 ROOT = Path(__file__).resolve().parent
 BASE_XLSX = ROOT / "Base.xlsx"
 OUT = ROOT / "data.inline.js"
+FOCUS_DATE_OVERRIDE = dt.date(2026, 5, 1)
+SPECIAL_SALE_GROUPS = [
+    {
+        "date": dt.date(2026, 5, 7),
+        "nfs": {"18", "19"},
+        "clients": {
+            "RUA DOS ALPES EMPREENDIMENTOS IMOBILIARIOS (026444)",
+            "CBR MAGIK LZ 14 EMPREENDIMENTOS IMOB. (026471)",
+        },
+        "group_id": "TRINITY::2026-05-07::RUA-DOS-ALPES-CBR-MAGIK",
+        "display_client": "Rua dos Alpes / CBR Magik",
+        "display_nf": "18 + 19",
+    },
+]
 
 MONTHS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
 MONTH_NAME_TO_NUMBER = {
@@ -100,6 +114,16 @@ def as_date(value: object) -> dt.date | None:
 
 
 def week_of_month(value: dt.date) -> int:
+    if value.year == 2026 and value.month == 5:
+        if value.day <= 9:
+            return 1
+        if value.day <= 16:
+            return 2
+        if value.day <= 23:
+            return 3
+        if value.day <= 30:
+            return 4
+        return 5
     # Calendar weeks inside the month, using Sunday-Saturday boundaries.
     first_day = value.replace(day=1)
     start_offset = (first_day.weekday() + 1) % 7
@@ -107,6 +131,16 @@ def week_of_month(value: dt.date) -> int:
 
 
 def week_bounds_in_month(value: dt.date) -> tuple[dt.date, dt.date]:
+    if value.year == 2026 and value.month == 5:
+        if value.day <= 9:
+            return dt.date(2026, 5, 1), dt.date(2026, 5, 9)
+        if value.day <= 16:
+            return dt.date(2026, 5, 10), dt.date(2026, 5, 16)
+        if value.day <= 23:
+            return dt.date(2026, 5, 17), dt.date(2026, 5, 23)
+        if value.day <= 30:
+            return dt.date(2026, 5, 24), dt.date(2026, 5, 30)
+        return dt.date(2026, 5, 31), dt.date(2026, 5, 31)
     month_start = value.replace(day=1)
     month_end = value.replace(day=calendar.monthrange(value.year, value.month)[1])
     days_since_sunday = (value.weekday() + 1) % 7
@@ -157,6 +191,18 @@ def focus_params(value: dt.date) -> dict[str, str]:
     }
 
 
+def special_sale_group_for(date_value: dt.date, nf: str, client: str) -> dict[str, object] | None:
+    for group in SPECIAL_SALE_GROUPS:
+        if date_value != group["date"]:
+            continue
+        if nf not in group["nfs"]:
+            continue
+        if client not in group["clients"]:
+            continue
+        return group
+    return None
+
+
 def build_vendas(wb: openpyxl.Workbook) -> list[dict[str, object]]:
     ws = wb["Base"]
     headers = list(next(ws.iter_rows(min_row=1, max_row=1, values_only=True)))
@@ -189,15 +235,18 @@ def build_vendas(wb: openpyxl.Workbook) -> list[dict[str, object]]:
             continue
         meta = month_meta(date_value)
         uf = clean_text(row[idx["UF"]]).upper()
+        nf = clean_text(row[idx["Nr. nota"]])
+        client = clean_text(row[idx["Pessoa"]], "Nao informado")
+        special_group = special_sale_group_for(date_value, nf, client)
         rows.append({
             "VendaID": str(sale_id),
             "DataEmissao": date_value.isoformat(),
             **meta,
-            "NF": clean_text(row[idx["Nr. nota"]]),
+            "NF": nf,
             "Tipo": clean_text(row[idx["Tipo"]], "Nao informado"),
             "LinhaReceita": clean_text(row[idx["Linha de Receita"]], "Nao informado"),
             "Valor": round(as_number(row[idx["Vl. total vendido"]]), 2),
-            "Cliente": clean_text(row[idx["Pessoa"]], "Nao informado"),
+            "Cliente": client,
             "Cidade": clean_text(row[idx["Cidade"]], "Nao informado"),
             "UF": uf,
             "Estado": clean_text(row[idx["Estado"]], "Nao informado"),
@@ -207,6 +256,9 @@ def build_vendas(wb: openpyxl.Workbook) -> list[dict[str, object]]:
             "FormaPagamento": clean_text(row[idx["Forma de Pagamento"]], "Não informado"),
             "OrigemLead": clean_text(row[idx["Origem do LEAD"]], "Não informado"),
             "Regiao": REGION_BY_UF.get(uf, "Nao informado"),
+            "VendaAgrupadaId": str(special_group["group_id"]) if special_group else "",
+            "VendaAgrupadaCliente": str(special_group["display_client"]) if special_group else "",
+            "VendaAgrupadaNF": str(special_group["display_nf"]) if special_group else "",
         })
     return rows
 
@@ -365,7 +417,9 @@ def main() -> None:
     wb = openpyxl.load_workbook(BASE_XLSX, read_only=True, data_only=True)
     vendas = build_vendas(wb)
     financeiro = build_financeiro(wb)
-    if vendas:
+    if FOCUS_DATE_OVERRIDE is not None:
+        focus_date = FOCUS_DATE_OVERRIDE
+    elif vendas:
         focus_date = max(dt.date.fromisoformat(row["DataEmissao"]) for row in vendas)
     elif financeiro:
         focus_date = max(dt.date.fromisoformat(row["DataEvento"]) for row in financeiro)
