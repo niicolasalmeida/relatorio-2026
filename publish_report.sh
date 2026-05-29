@@ -15,8 +15,13 @@ FILES=(
   "README.md"
 )
 
+LOCAL_NODE_BIN=".tools/node/bin"
+if [ -x "${LOCAL_NODE_BIN}/npx" ]; then
+  export PATH="${LOCAL_NODE_BIN}:$PATH"
+fi
+
 if ! command -v npx >/dev/null 2>&1; then
-  echo "Erro: npx nao foi encontrado. Instale o Node.js/NPM antes de publicar."
+  echo "Erro: npx nao foi encontrado. Instale Node.js/NPM ou extraia um Node local em .tools/node."
   exit 1
 fi
 
@@ -26,7 +31,7 @@ if [ ! -f ".vercel/project.json" ]; then
   exit 1
 fi
 
-git add -- "${FILES[@]}"
+git add -- .gitignore "${FILES[@]}"
 
 if git diff --cached --quiet; then
   echo "Nenhuma alteracao de publicacao encontrada no Git."
