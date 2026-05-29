@@ -4,6 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 FILES=(
+  ".vercelignore"
   "Relatório - Em contrução 2026 v4.backup.html"
   "data.inline.js"
   "vercel.json"
