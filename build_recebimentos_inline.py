@@ -5,7 +5,10 @@ import datetime as dt
 import json
 from pathlib import Path
 
-import openpyxl
+try:
+    import openpyxl
+except ModuleNotFoundError:
+    import xlsx_compat as openpyxl
 
 ROOT = Path(__file__).resolve().parent
 BASE_XLSX = ROOT / "Base.xlsx"

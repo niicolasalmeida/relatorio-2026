@@ -5,7 +5,10 @@ import datetime as dt
 import json
 from pathlib import Path
 
-import openpyxl
+try:
+    import openpyxl
+except ModuleNotFoundError:
+    import xlsx_compat as openpyxl
 
 ROOT = Path(__file__).resolve().parent
 BASE_XLSX = ROOT / "Base.xlsx"
@@ -49,6 +52,15 @@ def month_meta(value: dt.date) -> dict[str, object]:
     }
 
 
+def find_row(ws: openpyxl.worksheet.worksheet.Worksheet, label: str) -> int | None:
+    target = clean_text(label).casefold()
+    for row_idx in range(1, ws.max_row + 1):
+        value = clean_text(ws.cell(row_idx, 1).value)
+        if value.casefold() == target:
+            return row_idx
+    return None
+
+
 def build_receipts_block(ws: openpyxl.worksheet.worksheet.Worksheet, title_row: int) -> list[dict[str, object]]:
     company = clean_text(ws.cell(title_row, 1).value, "Nao informado").title()
     header_row = title_row + 1
@@ -65,7 +77,7 @@ def build_receipts_block(ws: openpyxl.worksheet.worksheet.Worksheet, title_row: 
         if not label:
             row_idx += 1
             continue
-        if label.upper() == "TOTAL":
+        if label.casefold() == "total":
             break
 
         for col, month_date in month_cols:
@@ -88,17 +100,30 @@ def build_projection(wb: openpyxl.Workbook) -> dict[str, list[dict[str, object]]
     ws = wb["Projeção"]
 
     receipts = []
-    receipts.extend(build_receipts_block(ws, 1))
-    receipts.extend(build_receipts_block(ws, 10))
+    for title in ("MIHA", "SPLAN"):
+        title_row = find_row(ws, title)
+        if title_row:
+            receipts.extend(build_receipts_block(ws, title_row))
 
     payments: list[dict[str, object]] = []
     month_pairs: list[tuple[int, dt.date]] = []
+    payment_title_row = find_row(ws, "Projeçao Pagamentos")
+    if payment_title_row is None:
+        payment_title_row = find_row(ws, "Projeção Pagamentos")
+    if payment_title_row is None:
+        return {
+            "recebimentos": receipts,
+            "pagamentos": payments,
+        }
+
+    payment_first_category_row = payment_title_row + 3
+
     for col in range(2, ws.max_column + 1, 2):
-        month_date = as_month_date(ws.cell(19, col).value)
+        month_date = as_month_date(ws.cell(payment_title_row, col).value)
         if month_date:
             month_pairs.append((col, month_date))
 
-    for row_idx in range(22, ws.max_row + 1):
+    for row_idx in range(payment_first_category_row, ws.max_row + 1):
         category = clean_text(ws.cell(row_idx, 1).value)
         if not category:
             continue

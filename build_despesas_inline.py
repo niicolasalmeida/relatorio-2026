@@ -5,13 +5,19 @@ import datetime as dt
 import json
 from pathlib import Path
 
-import openpyxl
+try:
+    import openpyxl
+except ModuleNotFoundError:
+    import xlsx_compat as openpyxl
 
 ROOT = Path(__file__).resolve().parent
 BASE_XLSX = ROOT / "Base.xlsx"
 OUT = ROOT / "despesas.inline.js"
 
 MONTHS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+NON_IMPORTED_PURCHASE_COMPANIES = {"Trinity", "Wevitta"}
+IMPORTED_PURCHASE_NATURE = "Compra de Mercadoria Importada"
+LOCAL_PURCHASE_NATURE = "Compra de Mercadoria"
 
 
 def as_date(value) -> dt.date | None:
@@ -68,16 +74,21 @@ def main() -> None:
         if issue_date is None:
             continue
         baixa_date = as_date(row[idx["Dt. baixa"]])
+        company = str(row[idx["Cód. empresa"]] or "").strip()
+        class2 = str(row[idx["Classificação 2"]] or "").strip()
+        natureza = class2
+        if company in NON_IMPORTED_PURCHASE_COMPANIES and class2 == IMPORTED_PURCHASE_NATURE:
+            natureza = LOCAL_PURCHASE_NATURE
 
         year = issue_date.year
         month = issue_date.month
         rows.append({
-            "Empresa": str(row[idx["Cód. empresa"]] or "").strip(),
+            "Empresa": company,
             "Favorecido": str(row[idx["Nome da pessoa"]] or "").strip(),
             "Classificacao0": str(row[idx["Classificação 0"]] or "").strip(),
             "Classificacao1": str(row[idx["Classificação 1"]] or "").strip(),
-            "Natureza": str(row[idx["Classificação 2"]] or "").strip(),
-            "Classificacao2": str(row[idx["Classificação 2"]] or "").strip(),
+            "Natureza": natureza,
+            "Classificacao2": natureza,
             "Caixa": str(row[idx["Caixa"]] or "").strip(),
             "ClassificacaoCaixa": str(row[idx["Caixa"]] or "").strip(),
             "FormaPagamento": str(row[idx["Forma de pagamento"]] or "").strip(),
