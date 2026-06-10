@@ -4290,8 +4290,24 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       if (state.page === "inventory") {
         const latestInventory = latestInventoryPeriod();
         if (latestInventory) {
-          state.year = latestInventory.year;
-          state.month = latestInventory.month;
+          const inventoryYears = Array.from(new Set(
+            (data.estoque || [])
+              .map((row) => Number(row.Ano || 0))
+              .filter((year) => year > 0)
+          )).sort((a, b) => a - b);
+          if (!inventoryYears.includes(Number(state.year || 0))) {
+            state.year = latestInventory.year;
+          }
+
+          const inventoryMonths = Array.from(new Set(
+            (data.estoque || [])
+              .filter((row) => Number(row.Ano || 0) === Number(state.year || 0))
+              .map((row) => Number(row.MesNumero || 0))
+              .filter((month) => month > 0)
+          )).sort((a, b) => a - b);
+          if (!inventoryMonths.includes(Number(state.month || 0))) {
+            state.month = inventoryMonths[inventoryMonths.length - 1] || latestInventory.month;
+          }
         }
         state.yearScope = false;
         state.week = null;
