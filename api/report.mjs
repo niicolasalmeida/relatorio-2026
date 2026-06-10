@@ -20,6 +20,13 @@ const protectedFiles = new Map([
     },
   ],
   [
+    'Relatório - Em contrução 2026 IA piloto.html',
+    {
+      filePath: resolve(currentDir, '..', 'Relatório - Em contrução 2026 IA piloto.html'),
+      contentType: 'text/html; charset=utf-8',
+    },
+  ],
+  [
     'despesas.inline.js',
     {
       filePath: resolve(currentDir, '..', 'despesas.inline.js'),
