@@ -2,10 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "api/report.mjs": {
-      "includeFiles": [
-        "Relatório - Em contrução 2026 v4.backup.html",
-        "Relatório - Em contrução 2026 IA piloto.html"
-      ]
+      "includeFiles": "{Relatório - Em contrução 2026 v4.backup.html,Relatório - Em contrução 2026 IA piloto.html,despesas.inline.js,recebimentos.inline.js,projecao.inline.js}"
     }
   },
   "routes": [
