@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard de Vendas - Splan Brasil</title>
+  <title>Dashboard de Vendas - SPlan Brasil</title>
   <style>
     :root {
       --bg: #edf4ee;
@@ -284,6 +284,11 @@
       font-size: 11px;
       color: #b6ddc9;
       font-weight: 700;
+    }
+
+    .projection-import-note {
+      color: #5f666d;
+      font-weight: 800;
     }
 
     .xchip {
@@ -2461,7 +2466,7 @@
       <div class="hero-meta">Atualizado em <span id="updTop">--</span></div>
       <div class="hero-head">
         <img id="brandLogo" class="hero-logo" alt="Logo da empresa" src="data:image/avif;base64,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" />
-        <h1 id="titleMain">Relatório Gerencial de Vendas - Splan Brasil</h1>
+        <h1 id="titleMain">Relatório Gerencial de Vendas - SPlan Brasil</h1>
       </div>
       <div id="warn" class="warn"></div>
     </section>
@@ -2713,6 +2718,7 @@
           <h3>Entradas, Saídas e Saldo Acumulado</h3>
           <div id="projScenarioFilter"></div>
           <div id="projComboChart"></div>
+          <div class="cross-note projection-import-note">Observação: Na parte das projeções de importações, utilizamos a projeção de R$ 6,6 milhões divididos em 12 meses (Mar 2026 - Fev 2027). Não alocamos valores para além desse horizonte.</div>
         </article>
       </section>
 
@@ -4228,7 +4234,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
             ? "Relatório Operacional - Estoque"
             : (state.page === "expenses"
               ? "Relatório Financeiro - Despesas"
-              : "Relatório Gerencial de Vendas - Splan Brasil"))));
+              : "Relatório Gerencial de Vendas - SPlan Brasil"))));
       document.getElementById("updTop").textContent = new Date().toLocaleString("pt-BR");
     }
 
