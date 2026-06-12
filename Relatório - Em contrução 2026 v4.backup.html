@@ -269,6 +269,16 @@
       border-color: #94d5b3;
     }
 
+    .filter-toggle-wrap {
+      display: none;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .filter-toggle-wrap.show {
+      display: flex;
+    }
+
     .year-scope-btn {
       width: 100%;
       justify-content: center;
@@ -2923,31 +2933,32 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       uf: null,
       seller: null,
       region: null,
-      saleType: null,
+      saleType: "Dignitus",
       classif: null,
       inventoryFamily: null,
       inventoryItem: null,
       inventoryStockType: null,
-      cashCompany: null,
+      cashCompany: "Dignitus",
       cashRank: null,
       cashTableDirection: null,
       projExcludeImportedPurchase: false,
       projEntryCompany: null,
       expenseExcludeImportedPurchase: false,
-      expenseCompany: null,
+      expenseCompany: "Dignitus",
       expenseCashClass: null,
       expenseClass1: null,
       expenseNature: null,
       expensePayment: null,
       expenseFavorecido: null,
-      dreCompany: null,
+      dreCompany: "Dignitus",
       dreSelectedLine: null,
       dreSelectedComposition: null,
       cashClassFocus: null,
     };
     const data = { vendas: [], financeiro: [], parametros: [], estoque: [], despesas: [], recebimentos: [], projecao: { recebimentos: [], pagamentos: [] } };
     const geo = { br: null, loading: false };
-    const CASH_COMPANIES = ["Wevitta", "Trinity", "Dignitus"];
+    const DEFAULT_COMPANY = "Dignitus";
+    const CASH_COMPANIES = ["Dignitus", "Wevitta", "Trinity"];
     const PROJECTION_IMPORTED_PURCHASE_CATEGORY = "Compra Mercadoria Importada Splan";
     const EXPENSE_IMPORTED_PURCHASE_NATURE = "Compra de Mercadoria Importada";
     const UF_BY_STATE = {
@@ -4148,7 +4159,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
     function sanitizeCrossFilters() {
       if (state.page === "dre") {
         const dreCompanies = new Set(timeRows().map((row) => dreCompanyOf(row)).filter(Boolean));
-        if (state.dreCompany && !dreCompanies.has(state.dreCompany)) state.dreCompany = null;
+        if (state.dreCompany && !dreCompanies.has(state.dreCompany)) state.dreCompany = DEFAULT_COMPANY;
         return;
       }
 
@@ -4158,16 +4169,16 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         state.uf = null;
         state.seller = null;
         state.region = null;
-        state.saleType = null;
+        state.saleType = DEFAULT_COMPANY;
         state.classif = null;
-        state.cashCompany = null;
-        state.expenseCompany = null;
+        state.cashCompany = DEFAULT_COMPANY;
+        state.expenseCompany = DEFAULT_COMPANY;
         state.expenseCashClass = null;
         state.expenseClass1 = null;
         state.expenseNature = null;
         state.expensePayment = null;
         state.expenseFavorecido = null;
-        state.dreCompany = null;
+        state.dreCompany = DEFAULT_COMPANY;
         return;
       }
 
@@ -4179,22 +4190,22 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
           ignoreCompany: true,
           ignoreRank: true,
         });
-        if (state.cashCompany && !cashCompanies.has(state.cashCompany)) state.cashCompany = null;
+        if (state.cashCompany && !cashCompanies.has(state.cashCompany)) state.cashCompany = DEFAULT_COMPANY;
         if (state.cashRank && !cashBaseRows.some((r) => cashRankLabelOf(r) === state.cashRank)) state.cashRank = null;
         state.lead = null;
         state.item = null;
         state.uf = null;
         state.seller = null;
         state.region = null;
-        state.saleType = null;
+        state.saleType = DEFAULT_COMPANY;
         state.classif = null;
-        state.expenseCompany = null;
+        state.expenseCompany = DEFAULT_COMPANY;
         state.expenseCashClass = null;
         state.expenseClass1 = null;
         state.expenseNature = null;
         state.expensePayment = null;
         state.expenseFavorecido = null;
-        state.dreCompany = null;
+        state.dreCompany = DEFAULT_COMPANY;
         return;
       }
 
@@ -4209,7 +4220,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
           ignorePayment: true,
           ignoreFavorecido: true,
         });
-        if (state.expenseCompany && !baseRows.some((r) => expenseCompanyOf(r) === state.expenseCompany)) state.expenseCompany = null;
+        if (state.expenseCompany && !baseRows.some((r) => expenseCompanyOf(r) === state.expenseCompany)) state.expenseCompany = DEFAULT_COMPANY;
         if (state.expenseCashClass && !baseRows.some((r) => expenseCashClassOf(r) === state.expenseCashClass)) state.expenseCashClass = null;
         if (state.expenseClass1 && !baseRows.some((r) => expenseClass1Of(r) === state.expenseClass1)) state.expenseClass1 = null;
         if (state.expenseNature && !baseRows.some((r) => expenseNatureOf(r) === state.expenseNature)) state.expenseNature = null;
@@ -4233,7 +4244,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       if (state.uf && !baseRows.some((r) => ufOf(r) === state.uf)) state.uf = null;
       if (state.seller && !baseRows.some((r) => vendedorOf(r) === state.seller)) state.seller = null;
       if (state.region && !baseRows.some((r) => regionOf(r) === state.region)) state.region = null;
-      if (state.saleType && !baseRows.some((r) => saleTypeOf(r) === state.saleType)) state.saleType = null;
+      if (state.saleType && !baseRows.some((r) => saleTypeOf(r) === state.saleType)) state.saleType = DEFAULT_COMPANY;
       if (state.classif && !baseRows.some((r) => classifOf(r) === state.classif)) state.classif = null;
     }
 
@@ -4415,18 +4426,25 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       state.uf = null;
       state.seller = null;
       state.region = null;
-      state.saleType = null;
+      state.saleType = DEFAULT_COMPANY;
       state.classif = null;
-      if (state.page !== "cash") state.cashCompany = null;
+      if (state.page !== "cash") state.cashCompany = DEFAULT_COMPANY;
       if (state.page !== "cash") state.cashRank = null;
       if (state.page !== "cash") state.cashClassFocus = null;
-      state.expenseCompany = null;
+      state.expenseCompany = DEFAULT_COMPANY;
       state.expenseCashClass = null;
       state.expenseClass1 = null;
       state.expenseNature = null;
       state.expensePayment = null;
       state.expenseFavorecido = null;
-      if (clearDreCompany || state.page !== "dre") state.dreCompany = null;
+      if (clearDreCompany || state.page !== "dre") state.dreCompany = DEFAULT_COMPANY;
+    }
+
+    function ensurePreferredCompanyFilters() {
+      if (state.page !== "sales" && !state.saleType) state.saleType = DEFAULT_COMPANY;
+      if (!state.cashCompany) state.cashCompany = DEFAULT_COMPANY;
+      if (!state.expenseCompany) state.expenseCompany = DEFAULT_COMPANY;
+      if (!state.dreCompany) state.dreCompany = DEFAULT_COMPANY;
     }
 
     function resetInventoryFilters() {
@@ -4505,12 +4523,53 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
     function bindSelect(id, options, current, onChange, allLabel = "Todos") {
       const sel = document.getElementById(id);
       if (!sel) return;
+      toggleFilterButtonHost(id, false);
+      sel.style.display = "";
       sel.innerHTML = [`<option value="">${allLabel}</option>`]
         .concat(options.map((v) => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`))
         .join("");
       sel.value = current || "";
       sel.disabled = false;
       sel.onchange = () => onChange(sel.value || null);
+    }
+
+    function ensureFilterButtonHost(id) {
+      const sel = document.getElementById(id);
+      if (!sel) return null;
+      let host = sel.parentElement ? sel.parentElement.querySelector(`[data-filter-buttons-for="${id}"]`) : null;
+      if (!host) {
+        host = document.createElement("div");
+        host.className = "filter-toggle-wrap";
+        host.dataset.filterButtonsFor = id;
+        sel.insertAdjacentElement("afterend", host);
+      }
+      return host;
+    }
+
+    function toggleFilterButtonHost(id, visible) {
+      const sel = document.getElementById(id);
+      const host = ensureFilterButtonHost(id);
+      if (sel) sel.style.display = visible ? "none" : "";
+      if (host) host.classList.toggle("show", !!visible);
+    }
+
+    function bindCompanyButtons(id, companies, current, onChange) {
+      const host = ensureFilterButtonHost(id);
+      if (!host) return;
+      toggleFilterButtonHost(id, true);
+      host.innerHTML = companies.map((entry) => {
+        const config = typeof entry === "string" ? { value: entry, label: entry } : entry;
+        const value = Object.prototype.hasOwnProperty.call(config, "value") ? config.value : config.label;
+        const label = config.label == null ? value : config.label;
+        const isActive = (current || null) === (value || null);
+        return `<button type="button" class="chip ${isActive ? "active" : ""}" data-company-value="${escapeHtml(value || "")}">${escapeHtml(label)}</button>`;
+      }).join("");
+      host.querySelectorAll("button[data-company-value]").forEach((bt) => {
+        bt.onclick = () => {
+          const value = bt.dataset.companyValue || null;
+          onChange(current === value ? null : value);
+        };
+      });
     }
 
     function setFilterLabel(id, text) {
@@ -4522,6 +4581,8 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       setFilterLabel(id, labelText);
       const sel = document.getElementById(id);
       if (!sel) return;
+      toggleFilterButtonHost(id, false);
+      sel.style.display = "";
       sel.innerHTML = `<option value="">${escapeHtml(placeholder)}</option>`;
       sel.value = "";
       sel.disabled = true;
@@ -4550,15 +4611,11 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
 
       if (state.page === "dre") {
         orderControlRows(["regSel", "typeSel", "classSel", "sellerSel", "cashSel"]);
-        const dreCompanies = buildOptions(
-          data.recebimentos.concat(data.despesas),
-          dreCompanyOf
-        );
         setFilterLabel("regSel", "Empresa");
-        bindSelect("regSel", dreCompanies, state.dreCompany, (value) => {
+        bindCompanyButtons("regSel", ["Dignitus", "Wevitta", "Trinity"], state.dreCompany, (value) => {
           state.dreCompany = value;
           render();
-        }, "Todas as empresas");
+        });
         disableSelect("typeSel", "", "");
         disableSelect("classSel", "", "");
         disableSelect("sellerSel", "", "");
@@ -4576,7 +4633,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         const regSelect = document.getElementById("regSel");
         const regRow = regSelect ? regSelect.closest(".control-row") : null;
         if (regLabel) regLabel.style.display = "";
-        if (regSelect) regSelect.style.display = "";
+        if (regSelect) regSelect.style.display = "none";
         if (regRow) regRow.style.display = "";
         return;
       }
@@ -4584,15 +4641,15 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       if (isCashContextPage()) {
         orderControlRows(["regSel", "typeSel", "classSel", "sellerSel", "cashSel"]);
         setFilterLabel("regSel", "Empresa");
-        bindSelect("regSel", CASH_COMPANIES, state.cashCompany, (value) => {
+        bindCompanyButtons("regSel", ["Dignitus", "Wevitta", "Trinity"], state.cashCompany, (value) => {
           state.cashCompany = value;
           render();
-        }, "Todas as empresas");
+        });
         const regLabel = document.querySelector('label[for="regSel"]');
         const regSelect = document.getElementById("regSel");
         const regRow = regSelect ? regSelect.closest(".control-row") : null;
         if (regLabel) regLabel.style.display = "";
-        if (regSelect) regSelect.style.display = "";
+        if (regSelect) regSelect.style.display = "none";
         if (regRow) regRow.style.display = "";
         ["typeSel", "classSel", "sellerSel", "cashSel"].forEach((id) => {
           const label = document.querySelector(`label[for="${id}"]`);
@@ -4645,6 +4702,8 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         setFilterLabel("regSel", "Familia");
         const regSel = document.getElementById("regSel");
         if (regSel) {
+          toggleFilterButtonHost("regSel", false);
+          regSel.style.display = "";
           regSel.innerHTML = [`<option value="">Todas as familias</option>`]
             .concat(buildOptions(baseRows, inventoryFamilyOf).map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(inventoryFamilyLabel(value))}</option>`))
             .join("");
@@ -4705,16 +4764,15 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         state.expensePayment = null;
         state.expenseFavorecido = null;
         const base = { month: state.yearScope ? null : state.month, week: state.yearScope ? null : state.week };
-        const rowsCompany = expenseRowsByContext({ ...base, ignoreCompany: true });
         const rowsCashClass = expenseRowsByContext({ ...base, ignoreCashClass: true });
         const rowsClass1 = expenseRowsByContext({ ...base, ignoreClass1: true });
         const rowsNature = expenseRowsByContext({ ...base, ignoreNature: true });
 
         setFilterLabel("regSel", "Empresa");
-        bindSelect("regSel", buildOptions(rowsCompany, expenseCompanyOf), state.expenseCompany, (value) => {
+        bindCompanyButtons("regSel", ["Dignitus", "Wevitta", "Trinity"], state.expenseCompany, (value) => {
           state.expenseCompany = value;
           render();
-        }, "Todas as empresas");
+        });
 
         setFilterLabel("cashSel", "Caixa");
         bindSelect("cashSel", buildOptions(rowsCashClass, expenseCashClassOf), state.expenseCashClass, (value) => {
@@ -4737,9 +4795,15 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         const sellerLabel = document.querySelector('label[for="sellerSel"]');
         const sellerSelect = document.getElementById("sellerSel");
         const sellerRow = sellerSelect ? sellerSelect.closest(".control-row") : null;
+        const regLabel = document.querySelector('label[for="regSel"]');
+        const regSelect = document.getElementById("regSel");
+        const regRow = regSelect ? regSelect.closest(".control-row") : null;
         const cashLabel = document.querySelector('label[for="cashSel"]');
         const cashSelect = document.getElementById("cashSel");
         const cashRow = cashSelect ? cashSelect.closest(".control-row") : null;
+        if (regLabel) regLabel.style.display = "";
+        if (regSelect) regSelect.style.display = "none";
+        if (regRow) regRow.style.display = "";
         if (cashLabel) cashLabel.style.display = "";
         if (cashSelect) cashSelect.style.display = "";
         if (cashRow) cashRow.style.display = "";
@@ -4767,7 +4831,6 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
 
       const base = { month: state.yearScope ? null : state.month };
       const rowsRegion = rowsByContext({ ...base, ignoreRegion: true });
-      const rowsType = rowsByContext({ ...base, ignoreType: true });
       const rowsClass = rowsByContext({ ...base, ignoreClassif: true });
       const rowsSeller = rowsByContext({ ...base, ignoreSeller: true });
 
@@ -4776,10 +4839,15 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
         render();
       }, "Todas as regioes");
 
-      bindSelect("typeSel", buildOptions(rowsType, saleTypeOf), state.saleType, (v) => {
+      bindCompanyButtons("typeSel", [
+        { label: "All", value: null },
+        "Dignitus",
+        "Wevitta",
+        "Trinity",
+      ], state.saleType, (v) => {
         state.saleType = v;
         render();
-      }, "Todas as empresas");
+      });
 
       bindSelect("classSel", buildOptions(rowsClass, classifOf), state.classif, (v) => {
         state.classif = v;
@@ -8293,6 +8361,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
       alignTimeContextToPage();
       syncHashWithPage();
       sanitizeCrossFilters();
+      ensurePreferredCompanyFilters();
       sanitizeInventoryFilters();
       updateHeader();
       renderYearQuickChips();
