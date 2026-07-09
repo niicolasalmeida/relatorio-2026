@@ -6,6 +6,7 @@ cd "$(dirname "$0")"
 FILES=(
   ".vercelignore"
   "Relatório - Em contrução 2026 v4.backup.html"
+  "Relatório - Em contrução 2026 CFO Virtual.html"
   "data.inline.js"
   "vercel.json"
   "api/report.mjs"

@@ -27,6 +27,13 @@ const protectedFiles = new Map([
     },
   ],
   [
+    'Relatório - Em contrução 2026 CFO Virtual.html',
+    {
+      filePath: resolve(currentDir, '..', 'Relatório - Em contrução 2026 CFO Virtual.html'),
+      contentType: 'text/html; charset=utf-8',
+    },
+  ],
+  [
     'despesas.inline.js',
     {
       filePath: resolve(currentDir, '..', 'despesas.inline.js'),
