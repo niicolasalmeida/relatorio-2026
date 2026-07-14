@@ -34,7 +34,11 @@ def main() -> None:
     content = replace_block(
         content,
         r"(?s)<script>\s*window\.__BRASIL_GEOJSON__ = .*?</script>\s*<script>\s*const MONTHS = \[\"Jan\"",
-        f"<script>\n{combined_block}\n</script>\n  <script>\n    const MONTHS = [\"Jan\"",
+        (
+            f"<script>\n{combined_block}\n"
+            "window.__DASHBOARD_DATA__ = window.__DASHBOARD_DATA_FULL__ || window.__DASHBOARD_DATA__;\n"
+            "</script>\n  <script>\n    const MONTHS = [\"Jan\""
+        ),
         "data_embutida",
     )
 
