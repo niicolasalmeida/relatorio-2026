@@ -41,6 +41,13 @@ const protectedFiles = new Map([
     },
   ],
   [
+    'despesas-observacoes.inline.js',
+    {
+      filePath: resolve(currentDir, '..', 'despesas-observacoes.inline.js'),
+      contentType: 'application/javascript; charset=utf-8',
+    },
+  ],
+  [
     'recebimentos.inline.js',
     {
       filePath: resolve(currentDir, '..', 'recebimentos.inline.js'),

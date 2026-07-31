@@ -2917,6 +2917,7 @@ window.__DASHBOARD_DATA__ = {"vendas": [{"VendaID": "1", "DataEmissao": "2025-04
 })();
 window.__DASHBOARD_DATA__ = window.__DASHBOARD_DATA_FULL__ || window.__DASHBOARD_DATA__;
 </script>
+  <script src="./despesas-observacoes.inline.js"></script>
   <script>
     const MONTHS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
     const MONTHS_FULL = ["Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -3281,6 +3282,23 @@ window.__DASHBOARD_DATA__ = window.__DASHBOARD_DATA_FULL__ || window.__DASHBOARD
 
     function expenseClass1Of(r) {
       return String(r.Classificacao1 || r["Classificação 1"] || r["Classificacao 1"] || "").trim() || "Nao informado";
+    }
+
+    function expenseObservationKey(r) {
+      return [
+        String(r.Empresa || "").trim(),
+        String(r.Favorecido || "").trim(),
+        String(r.DataEmissao || "").trim(),
+        Number(r.ValorLiquido || 0).toFixed(2),
+        String(r.Classificacao2 || r.Natureza || "").trim(),
+      ].join("||");
+    }
+
+    function expenseObservationOf(r) {
+      const inlineValue = String(r.Observacao || r["Observação"] || "").trim();
+      if (inlineValue) return inlineValue;
+      const lookup = window.__EXPENSE_OBSERVATIONS__ || {};
+      return String(lookup[expenseObservationKey(r)] || "").trim() || "-";
     }
 
     function expensePaymentOf(r) {
@@ -7648,6 +7666,7 @@ window.__DASHBOARD_DATA__ = window.__DASHBOARD_DATA_FULL__ || window.__DASHBOARD
           <td>${escapeHtml(row.Empresa)}</td>
           <td>${escapeHtml(row.Favorecido)}</td>
           <td>${escapeHtml(expenseNatureOf(row))}</td>
+          <td>${escapeHtml(expenseObservationOf(row))}</td>
           <td>${brl(row.ValorLiquido)}</td>
         </tr>
       `).join("");
@@ -7661,6 +7680,7 @@ window.__DASHBOARD_DATA__ = window.__DASHBOARD_DATA_FULL__ || window.__DASHBOARD
                 <th>Empresa</th>
                 <th>Favorecido</th>
                 <th>Natureza</th>
+                <th>Observação</th>
                 <th>Valor</th>
               </tr>
             </thead>
@@ -8487,6 +8507,7 @@ window.__DASHBOARD_DATA__ = window.__DASHBOARD_DATA_FULL__ || window.__DASHBOARD
         ...r,
         Empresa: String(r.Empresa || "").trim(),
         Favorecido: String(r.Favorecido || "").trim(),
+        Observacao: String(r.Observacao || r["Observação"] || "").trim(),
         Classificacao0: String(r.Classificacao0 || r["Classificação 0"] || r["Classificacao 0"] || "").trim(),
         Classificacao1: String(r.Classificacao1 || r["Classificação 1"] || r["Classificacao 1"] || "").trim(),
         Caixa: expenseCashClassOf(r),

@@ -11,6 +11,7 @@ FILES=(
   "vercel.json"
   "api/report.mjs"
   "despesas.inline.js"
+  "despesas-observacoes.inline.js"
   "recebimentos.inline.js"
   "projecao.inline.js"
   "publish_report.sh"
