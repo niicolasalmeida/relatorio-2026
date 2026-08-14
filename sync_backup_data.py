@@ -23,19 +23,11 @@ def replace_block(content: str, pattern: str, replacement: str, label: str) -> s
 def main() -> None:
     content = BACKUP_HTML.read_text(encoding="utf-8")
 
-    combined_block = "\n\n".join([
-        (ROOT / "brasil.geojson.js").read_text(encoding="utf-8").rstrip(),
-        (ROOT / "data.inline.js").read_text(encoding="utf-8").rstrip(),
-        (ROOT / "despesas.inline.js").read_text(encoding="utf-8").rstrip(),
-        (ROOT / "recebimentos.inline.js").read_text(encoding="utf-8").rstrip(),
-        (ROOT / "projecao.inline.js").read_text(encoding="utf-8").rstrip(),
-    ])
-
     content = replace_block(
         content,
-        r"(?s)<script>\s*window\.__BRASIL_GEOJSON__ = .*?</script>\s*<script>\s*const MONTHS = \[\"Jan\"",
-        f"<script>\n{combined_block}\n</script>\n  <script>\n    const MONTHS = [\"Jan\"",
-        "data_embutida",
+        r"(?s)<script>\s*\(function\s*\(\)\s*\{\s*const data = window\.__DASHBOARD_DATA__ \|\| \{\};\s*data\.projecao = .*?window\.__DASHBOARD_DATA__ = data;\s*\}\)\(\);\s*</script>",
+        wrapped_script(ROOT / "projecao.inline.js"),
+        "projecao_embutida",
     )
 
     BACKUP_HTML.write_text(content, encoding="utf-8")
