@@ -1647,6 +1647,14 @@
       z-index: 1;
     }
 
+    .expense-nature-detail-table-wrap .pay-table th:nth-child(1) { width: 9%; }
+    .expense-nature-detail-table-wrap .pay-table th:nth-child(2) { width: 10%; }
+    .expense-nature-detail-table-wrap .pay-table th:nth-child(3) { width: 18%; }
+    .expense-nature-detail-table-wrap .pay-table th:nth-child(4) { width: 13%; }
+    .expense-nature-detail-table-wrap .pay-table th:nth-child(5) { width: 13%; }
+    .expense-nature-detail-table-wrap .pay-table th:nth-child(6) { width: 29%; }
+    .expense-nature-detail-table-wrap .pay-table th:nth-child(7) { width: 8%; }
+
     .dre-table-wrap {
       max-height: 460px;
       overflow: auto;
@@ -7880,12 +7888,13 @@ Implementar um sistema de pagamento fixo para alguns produtos", "Dignitus||333 T
           <td>${escapeHtml(row.Favorecido)}</td>
           <td>${escapeHtml(expenseClass1Of(row))}</td>
           <td>${escapeHtml(expenseNatureOf(row))}</td>
+          <td>${escapeHtml(expenseObservationOf(row))}</td>
           <td>${brl(row.ValorLiquido)}</td>
         </tr>
       `).join("");
 
       host.innerHTML = `
-        <div class="pay-table-wrap expense-detail-table-wrap">
+        <div class="pay-table-wrap expense-detail-table-wrap expense-nature-detail-table-wrap">
           <table class="pay-table">
             <thead>
               <tr>
@@ -7894,6 +7903,7 @@ Implementar um sistema de pagamento fixo para alguns produtos", "Dignitus||333 T
                 <th>Favorecido</th>
                 <th>Classificação 1</th>
                 <th>Natureza</th>
+                <th>Detalhes</th>
                 <th>Valor</th>
               </tr>
             </thead>

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(dirname "$0")"
+ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$ROOT_DIR"
 
 FILES=(
   ".vercelignore"
@@ -18,13 +19,18 @@ FILES=(
   "README.md"
 )
 
-LOCAL_NODE_BIN=".tools/node/bin"
-if [ -x "${LOCAL_NODE_BIN}/npx" ]; then
+LOCAL_NODE_BIN="${ROOT_DIR}/.tools/node/bin"
+if [ -x "${LOCAL_NODE_BIN}/node" ] && [ -x "${LOCAL_NODE_BIN}/npx" ]; then
   export PATH="${LOCAL_NODE_BIN}:$PATH"
 fi
 
 if ! command -v npx >/dev/null 2>&1; then
   echo "Erro: npx nao foi encontrado. Instale Node.js/NPM ou extraia um Node local em .tools/node."
+  exit 1
+fi
+
+if ! git config user.name >/dev/null || ! git config user.email >/dev/null; then
+  echo "Erro: configure uma vez o nome e o email do Git com git config --global."
   exit 1
 fi
 
@@ -42,13 +48,22 @@ else
   MESSAGE="${1:-Atualiza relatorio publicado $(date '+%Y-%m-%d %H:%M:%S')}"
 
   git commit -m "$MESSAGE"
-  git push origin main
-
-  echo
-  echo "Push concluido."
+  if ! git push origin main; then
+    echo
+    echo "Aviso: o GitHub recusou o push. O deploy do Vercel continuara normalmente."
+    echo "Configure a autenticacao persistente do GitHub para sincronizar o commit depois."
+  else
+    echo
+    echo "Push concluido."
+  fi
 fi
 
-npx vercel --prod --yes
+if ! npx vercel --prod --yes; then
+  echo
+  echo "Erro: o Vercel recusou o deploy. Execute uma vez: npx vercel login"
+  echo "Depois execute este script novamente."
+  exit 1
+fi
 
 echo
 echo "Deploy do Vercel concluido."
